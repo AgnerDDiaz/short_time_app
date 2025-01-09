@@ -23,7 +23,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int currentScreen = 0;
-  final List<Widget> screens = [ExploreScreen(), ReservasScreen(), Profile()];
+  final List<Widget> screens = [ExploreScreen(), Reservas_Screen(), Profile()];
 
   void ChangeScreen(int index) {
     setState(() {

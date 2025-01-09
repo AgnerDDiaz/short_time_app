@@ -79,7 +79,10 @@ class Wrapper extends StatelessWidget {
         ChangeThemeMode: ChangeThemeMode,
       );
     } else {
-      return LoginScreen();
+      return Home(
+        appTitle: appTitle,
+        ChangeThemeMode: ChangeThemeMode,
+      );
     }
   }
 }

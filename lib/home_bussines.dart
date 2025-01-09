@@ -23,7 +23,7 @@ class Home_bussines extends StatefulWidget {
 
 class _HomeState extends State<Home_bussines> {
   int currentScreen = 0;
-  final List<Widget> screens = [ExploreScreen(), ReservasScreen(), ProfileBussines()];
+  final List<Widget> screens = [ExploreScreen(), Reservas_Screen(), Perfil_bussines()];
 
   void ChangeScreen(int index) {
     setState(() {
