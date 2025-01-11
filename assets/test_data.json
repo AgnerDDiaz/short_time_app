@@ -1,0 +1,302 @@
+{
+  "usuario": [
+    {
+      "idusuario": 1,
+      "rol": "cliente",
+      "nombre": "Juan Pérez",
+      "contraseña": "hashed_password",
+      "email": "juan.perez@ejemplo.com",
+      "foto": "https://example.com/profile1.jpg",
+      "ubicacion": "Av. Principal #123, Ciudad, País",
+      "apertura": "09:00:00",
+      "cierre": "18:00:00",
+      "telefono": "+123456789"
+    },
+    {
+      "idusuario": 2,
+      "rol": "cliente",
+      "nombre": "María López",
+      "contraseña": "hashed_password",
+      "email": "maria.lopez@ejemplo.com",
+      "foto": "https://example.com/profile2.jpg",
+      "ubicacion": "Calle Secundaria #456, Ciudad, País",
+      "apertura": "10:00:00",
+      "cierre": "20:00:00",
+      "telefono": "+123123123"
+    },
+    {
+      "idusuario": 3,
+      "rol": "cliente",
+      "nombre": "Carlos Méndez",
+      "contraseña": "hashed_password",
+      "email": "carlos.mendez@ejemplo.com",
+      "foto": "https://example.com/profile3.jpg",
+      "ubicacion": "Calle Ejemplo #789, Ciudad, País",
+      "apertura": "08:00:00",
+      "cierre": "17:00:00",
+      "telefono": "+456456456"
+    },
+    {
+      "idusuario": 4,
+      "rol": "cliente",
+      "nombre": "Sofía García",
+      "contraseña": "hashed_password",
+      "email": "sofia.garcia@ejemplo.com",
+      "foto": "https://example.com/profile4.jpg",
+      "ubicacion": "Plaza Central, Ciudad, País",
+      "apertura": "11:00:00",
+      "cierre": "19:00:00",
+      "telefono": "+789789789"
+    },
+    {
+      "idusuario": 5,
+      "rol": "cliente",
+      "nombre": "Pedro Fernández",
+      "contraseña": "hashed_password",
+      "email": "pedro.fernandez@ejemplo.com",
+      "foto": "https://example.com/profile5.jpg",
+      "ubicacion": "Zona Norte, Ciudad, País",
+      "apertura": "10:00:00",
+      "cierre": "16:00:00",
+      "telefono": "+112112112"
+    },
+    {
+      "idusuario": 6,
+      "rol": "cliente",
+      "nombre": "Lucía Rodríguez",
+      "contraseña": "hashed_password",
+      "email": "lucia.rodriguez@ejemplo.com",
+      "foto": "https://example.com/profile6.jpg",
+      "ubicacion": "Centro Histórico, Ciudad, País",
+      "apertura": "09:00:00",
+      "cierre": "18:00:00",
+      "telefono": "+113113113"
+    },
+    {
+      "idusuario": 7,
+      "rol": "cliente",
+      "nombre": "Daniel Morales",
+      "contraseña": "hashed_password",
+      "email": "daniel.morales@ejemplo.com",
+      "foto": "https://example.com/profile7.jpg",
+      "ubicacion": "Barrio Oeste, Ciudad, País",
+      "apertura": "12:00:00",
+      "cierre": "20:00:00",
+      "telefono": "+114114114"
+    },
+    {
+      "idusuario": 8,
+      "rol": "cliente",
+      "nombre": "Paula Ramírez",
+      "contraseña": "hashed_password",
+      "email": "paula.ramirez@ejemplo.com",
+      "foto": "https://example.com/profile8.jpg",
+      "ubicacion": "Zona Sur, Ciudad, País",
+      "apertura": "10:00:00",
+      "cierre": "15:00:00",
+      "telefono": "+115115115"
+    },
+    {
+      "idusuario": 9,
+      "rol": "cliente",
+      "nombre": "Miguel Torres",
+      "contraseña": "hashed_password",
+      "email": "miguel.torres@ejemplo.com",
+      "foto": "https://example.com/profile9.jpg",
+      "ubicacion": "Sector Este, Ciudad, País",
+      "apertura": "11:00:00",
+      "cierre": "19:00:00",
+      "telefono": "+116116116"
+    },
+    {
+      "idusuario": 10,
+      "rol": "cliente",
+      "nombre": "Elena Ruiz",
+      "contraseña": "hashed_password",
+      "email": "elena.ruiz@ejemplo.com",
+      "foto": "https://example.com/profile10.jpg",
+      "ubicacion": "Residencial El Sol, Ciudad, País",
+      "apertura": "09:30:00",
+      "cierre": "17:30:00",
+      "telefono": "+117117117"
+    },
+    {
+      "idusuario": 11,
+      "rol": "cliente",
+      "nombre": "Fernando Vega",
+      "contraseña": "hashed_password",
+      "email": "fernando.vega@ejemplo.com",
+      "foto": "https://example.com/profile11.jpg",
+      "ubicacion": "Zona Universitaria, Ciudad, País",
+      "apertura": "08:00:00",
+      "cierre": "14:00:00",
+      "telefono": "+118118118"
+    },
+    {
+      "idusuario": 12,
+      "rol": "cliente",
+      "nombre": "Gabriela Díaz",
+      "contraseña": "hashed_password",
+      "email": "gabriela.diaz@ejemplo.com",
+      "foto": "https://example.com/profile12.jpg",
+      "ubicacion": "Boulevard Central, Ciudad, País",
+      "apertura": "13:00:00",
+      "cierre": "21:00:00",
+      "telefono": "+119119119"
+    },
+    {
+      "idusuario": 13,
+      "rol": "cliente",
+      "nombre": "Javier Castro",
+      "contraseña": "hashed_password",
+      "email": "javier.castro@ejemplo.com",
+      "foto": "https://example.com/profile13.jpg",
+      "ubicacion": "Barrio Norte, Ciudad, País",
+      "apertura": "10:00:00",
+      "cierre": "18:00:00",
+      "telefono": "+120120120"
+    },
+    {
+      "idusuario": 14,
+      "rol": "cliente",
+      "nombre": "Marta Silva",
+      "contraseña": "hashed_password",
+      "email": "marta.silva@ejemplo.com",
+      "foto": "https://example.com/profile14.jpg",
+      "ubicacion": "Sector Central, Ciudad, País",
+      "apertura": "07:00:00",
+      "cierre": "15:00:00",
+      "telefono": "+121121121"
+    },
+    {
+      "idusuario": 15,
+      "rol": "cliente",
+      "nombre": "Héctor Navarro",
+      "contraseña": "hashed_password",
+      "email": "hector.navarro@ejemplo.com",
+      "foto": "https://example.com/profile15.jpg",
+      "ubicacion": "Colonia del Este, Ciudad, País",
+      "apertura": "11:30:00",
+      "cierre": "20:00:00",
+      "telefono": "+122122122"
+    },
+    {
+      "idusuario": 16,
+      "rol": "usuario",
+      "nombre": "Ana Gómez",
+      "contraseña": "hashed_password",
+      "email": "ana.gomez@ejemplo.com",
+      "foto": "https://example.com/profile16.jpg",
+      "ubicacion": null,
+      "apertura": null,
+      "cierre": null,
+      "telefono": "+987654321"
+    },
+    {
+      "idusuario": 17,
+      "rol": "usuario",
+      "nombre": "Luis Martínez",
+      "contraseña": "hashed_password",
+      "email": "luis.martinez@ejemplo.com",
+      "foto": "https://example.com/profile17.jpg",
+      "ubicacion": null,
+      "apertura": null,
+      "cierre": null,
+      "telefono": "+876543210"
+    },
+    {
+      "idusuario": 18,
+      "rol": "usuario",
+      "nombre": "Clara Hernández",
+      "contraseña": "hashed_password",
+      "email": "clara.hernandez@ejemplo.com",
+      "foto": "https://example.com/profile18.jpg",
+      "ubicacion": null,
+      "apertura": null,
+      "cierre": null,
+      "telefono": "+765432109"
+    },
+    {
+      "idusuario": 19,
+      "rol": "usuario",
+      "nombre": "Diego Vargas",
+      "contraseña": "hashed_password",
+      "email": "diego.vargas@ejemplo.com",
+      "foto": "https://example.com/profile19.jpg",
+      "ubicacion": null,
+      "apertura": null,
+      "cierre": null,
+      "telefono": "+654321098"
+    },
+    {
+      "idusuario": 20,
+      "rol": "usuario",
+      "nombre": "Isabel Rojas",
+      "contraseña": "hashed_password",
+      "email": "isabel.rojas@ejemplo.com",
+      "foto": "https://example.com/profile20.jpg",
+      "ubicacion": null,
+      "apertura": null,
+      "cierre": null,
+      "telefono": "+543210987"
+    }
+  ],
+  "servicios": [
+    {
+      "idservicio": 1,
+      "nombre": "Corte de Cabello",
+      "descripcion": "Corte de cabello profesional para hombres y mujeres.",
+      "precio": 15.50,
+      "categoria": "Barbería",
+      "calificacion": "4.5",
+      "idcliente": 1
+    },
+    {
+      "idservicio": 2,
+      "nombre": "Manicure y Pedicure",
+      "descripcion": "Cuidado completo de uñas y pies.",
+      "precio": 25.00,
+      "categoria": "Salón de Belleza",
+      "calificacion": "4.8",
+      "idcliente": 2
+    }
+  ],
+  "reservacion": [
+    {
+      "idreservacion": 1,
+      "idusuario": 16,
+      "idservicio": 1,
+      "fecha": "2025-01-15",
+      "estatus": "pendiente",
+      "comentario": "Por favor, utilizar tijeras para corte."
+    },
+    {
+      "idreservacion": 2,
+      "idusuario": 17,
+      "idservicio": 2,
+      "fecha": "2025-01-16",
+      "estatus": "confirmada",
+      "comentario": "Necesito que el manicure sea de color rojo."
+    }
+  ],
+  "reseña": [
+    {
+      "idreseña": 1,
+      "idservicio": 1,
+      "idusuario": 16,
+      "calificacion": 5,
+      "comentario": "El servicio fue excelente, ¡muy recomendado!",
+      "respuesta": "Gracias por tu comentario, Ana."
+    }
+  ],
+  "servicio_favoritos": [
+    {
+      "servicio": 1,
+      "idusuario": 16
+    },
+    {
+      "servicio": 2,
+      "idusuario": 17
+    }
+  ]
+}

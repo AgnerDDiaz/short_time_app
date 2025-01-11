@@ -30,6 +30,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/test_data.json
     - assets/food_pics/
     - assets/magazine_pics/
     - assets/profile_pics/
