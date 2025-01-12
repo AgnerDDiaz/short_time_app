@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ClientCard extends StatelessWidget {
   final String imageUrl;
@@ -18,12 +19,25 @@ class ClientCard extends StatelessWidget {
     required this.onTap,
   }) : super(key: key);
 
+  String formatTime(String time) {
+    try {
+      // Convertir la hora de texto a DateTime
+      final parsedTime = DateFormat("HH:mm:ss").parse(time);
+      // Formatear en AM/PM
+      return DateFormat.jm().format(parsedTime);
+    } catch (e) {
+      // Retornar la hora original en caso de error
+      return time;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Card(
         elevation: 4,
+        color: Theme.of(context).cardColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,8 +62,10 @@ class ClientCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(location, style: Theme.of(context).textTheme.bodyLarge),
                   const SizedBox(height: 4),
-                  Text("Horario: $openingTime - $closingTime",
-                      style: Theme.of(context).textTheme.bodyLarge),
+                  Text(
+                    "${formatTime(openingTime)} - ${formatTime(closingTime)}",
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
                 ],
               ),
             ),

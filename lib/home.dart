@@ -60,6 +60,7 @@ class _HomeState extends State<Home> {
     return Consumer<TabManager>(
       builder: (context, tabManager, child) => Scaffold(
         appBar: AppBar(
+          backgroundColor: Theme.of(context).appBarTheme.backgroundColor, // Color fijo
           title: Row(
             children: [
               const SizedBox(width: 8),
@@ -105,11 +106,13 @@ class _HomeState extends State<Home> {
             ),
 
             ThemeButton(changeTheme: widget.ChangeThemeMode),
+
           ],
+
         ),
         bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: Colors.blue,
-          unselectedItemColor: Colors.grey,
+          unselectedItemColor: Colors.blueGrey,
           onTap: (value) {
             tabManager.goToTab(value);
           },
