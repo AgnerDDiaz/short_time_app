@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../models/auth_manager.dart';
 
 class LoginScreen extends StatefulWidget {
+  static const routeName = '/login';
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -12,6 +12,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
+  bool _isPasswordVisible = false; // Control de visibilidad de la contraseña
 
   void _login() async {
     if (_formKey.currentState!.validate()) {
@@ -19,31 +20,42 @@ class _LoginScreenState extends State<LoginScreen> {
         _isLoading = true; // Mostrar indicador de carga
       });
 
-      final email = emailController.text.trim();
-      final password = passwordController.text.trim();
-      final authManager = Provider.of<AuthManager>(context, listen: false);
+      await Future.delayed(Duration(seconds: 1)); // Simular carga
 
-      final isAuthenticated = await authManager.login(email, password);
+      String email = emailController.text;
+      String password = passwordController.text;
 
-      setState(() {
-        _isLoading = false; // Ocultar indicador de carga
-      });
-
-      if (isAuthenticated) {
-        if (authManager.userType == 'client') {
-          Navigator.pushReplacementNamed(context, '/clientHome');
-        } else if (authManager.userType == 'business') {
-          Navigator.pushReplacementNamed(context, '/businessHome');
-        }
+      // Simulación de validación de credenciales
+      if (email == 'user@example.com' && password == 'password123') {
+        setState(() {
+          _isLoading = false; // Ocultar indicador de carga
+        });
+        Navigator.pushReplacementNamed(context, '/home'); // Redirigir al Home
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Invalid credentials. Please try again.'),
-            backgroundColor: Colors.red,
-          ),
-        );
+        setState(() {
+          _isLoading = false; // Ocultar indicador de carga
+        });
+        _showErrorDialog("Invalid credentials. Please try again.");
       }
     }
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('Login Failed'),
+        content: Text(message),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+            child: Text('OK'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -94,22 +106,34 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (value == null || value.isEmpty) {
                         return "Please enter your email.";
                       }
-                      if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                        return "Please enter a valid email.";
+                      if (!RegExp(r'^[^@]+@[^@]+\.[^@]+$').hasMatch(value)) {
+                        return "Please enter a valid email address.";
                       }
                       return null;
                     },
                   ),
                   SizedBox(height: 16.0),
 
-                  // Campo de texto para contraseña
+                  // Campo de texto para contraseña con icono de visibilidad
                   TextFormField(
                     controller: passwordController,
-                    obscureText: true,
+                    obscureText: !_isPasswordVisible,
                     decoration: InputDecoration(
                       labelText: "Password",
                       border: OutlineInputBorder(),
                       prefixIcon: Icon(Icons.lock),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isPasswordVisible = !_isPasswordVisible;
+                          });
+                        },
+                      ),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -123,18 +147,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   SizedBox(height: 16.0),
 
-                  // Botón "Forgot password?"
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: () {
-                        // Acción para recuperar contraseña
-                      },
-                      child: Text("Forgot password?"),
-                    ),
-                  ),
-                  SizedBox(height: 16.0),
-
                   // Botón de inicio de sesión
                   _isLoading
                       ? CircularProgressIndicator() // Indicador de carga
@@ -144,46 +156,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(double.infinity, 50),
                     ),
-                  ),
-                  SizedBox(height: 16.0),
-
-                  // Opciones de registro
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Not a Client? "),
-                      GestureDetector(
-                        onTap: () {
-                          // Navega a pantalla de registro de usuarios
-                        },
-                        child: Text(
-                          "Register now",
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 8.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Are you a Business? "),
-                      GestureDetector(
-                        onTap: () {
-                          // Navega a pantalla de registro de negocios
-                        },
-                        child: Text(
-                          "Login here",
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
                   ),
                 ],
               ),

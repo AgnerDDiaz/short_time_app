@@ -6,7 +6,7 @@ import 'home.dart';
 import 'models/grocery_manager.dart';
 import 'models/tab_manager.dart';
 import 'screens/login_screen.dart';
-import 'models/auth_manager.dart'; // Clase para manejar la autenticación
+import 'models/auth_manager.dart';
 
 void main() {
   runApp(ShortTimeApp());
@@ -45,44 +45,22 @@ class ShortTimeAppState extends State<ShortTimeApp> {
           create: (context) => TabManager(),
         ),
         ChangeNotifierProvider(
-          create: (context) => AuthManager(), // Agregamos el AuthManager
+          create: (context) => AuthManager(),
         ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: theme,
         title: appTitle,
-        home: Wrapper(
-          appTitle: appTitle,
-          ChangeThemeMode: ChangeThemeMode,
-        ),
+        initialRoute: '/login', // Ahora la ruta inicial es "/login"
+        routes: {
+          '/login': (context) => LoginScreen(), // Pantalla de Login
+          '/home': (context) => Home(
+            appTitle: appTitle,
+            ChangeThemeMode: ChangeThemeMode,
+          ), // Pantalla principal Home
+        },
       ),
     );
-  }
-}
-
-class Wrapper extends StatelessWidget {
-  final String appTitle;
-  final Function(bool) ChangeThemeMode;
-
-  Wrapper({required this.appTitle, required this.ChangeThemeMode});
-
-  @override
-  Widget build(BuildContext context) {
-    // Verificamos si el usuario está autenticado
-    final authManager = Provider.of<AuthManager>(context);
-
-    // Si está autenticado, muestra la Home, si no, redirige al LoginScreen
-    if (authManager.isAuthenticated) {
-      return Home(
-        appTitle: appTitle,
-        ChangeThemeMode: ChangeThemeMode,
-      );
-    } else {
-      return Home(
-        appTitle: appTitle,
-        ChangeThemeMode: ChangeThemeMode,
-      );
-    }
   }
 }
