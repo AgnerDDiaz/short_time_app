@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:short_time_app/screens/explore_screen.dart';
 import 'package:short_time_app/screens/Reservas_screen.dart';
+import 'package:short_time_app/screens/main_feed_screen.dart';
 import 'package:short_time_app/screens/profile.dart';
 
 import 'components/Theme_button.dart';
@@ -23,7 +24,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int currentScreen = 0;
-  final List<Widget> screens = [ExploreScreen(), Reservas_Screen(), Profile()];
+  final List<Widget> screens = [MainFeedScreen(), Reservas_Screen(), Profile()];
 
   void ChangeScreen(int index) {
     setState(() {

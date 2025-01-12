@@ -6,7 +6,7 @@
       "nombre": "Juan Pérez",
       "contraseña": "hashed_password",
       "email": "juan.perez@ejemplo.com",
-      "foto": "https://example.com/profile1.jpg",
+      "foto": null,
       "ubicacion": "Av. Principal #123, Ciudad, País",
       "apertura": "09:00:00",
       "cierre": "18:00:00",
@@ -249,7 +249,7 @@
       "precio": 15.50,
       "categoria": "Barbería",
       "calificacion": "4.5",
-      "idcliente": 1
+      "idusuario": 1
     },
     {
       "idservicio": 2,
@@ -258,7 +258,7 @@
       "precio": 25.00,
       "categoria": "Salón de Belleza",
       "calificacion": "4.8",
-      "idcliente": 2
+      "idusuario": 2
     }
   ],
   "reservacion": [

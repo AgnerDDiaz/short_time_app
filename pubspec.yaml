@@ -24,7 +24,7 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: false
-  image_path: assets/icon/Logo_App.png
+  image_path: assets/icon/Short_Time Logo Claro.jpg
 
 flutter:
   uses-material-design: true
@@ -37,6 +37,7 @@ flutter:
     - assets/sample_data/
     - assets/grocery_pics/
     - assets/icon/
+    - assets/short_time_assets/ImagenLocal.jpg
 
   fonts:
     - family: Inter
