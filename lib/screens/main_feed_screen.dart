@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 
 import '../widgets/client_card.dart';
-import '../widgets/service_card.dart';
 import 'client_services_screen.dart';
 
 class MainFeedScreen extends StatefulWidget {
@@ -24,10 +23,8 @@ class _MainFeedScreenState extends State<MainFeedScreen> {
 
   Future<void> loadClients() async {
     try {
-      final String response =
-      await rootBundle.loadString('assets/test_data.json');
+      final String response = await rootBundle.loadString('assets/test_data.json');
       final decodedData = json.decode(response);
-      // Filtrar solo usuarios con rol "cliente"
       setState(() {
         clients = decodedData['usuario']
             .where((user) => user['rol'] == 'cliente')
@@ -39,7 +36,6 @@ class _MainFeedScreenState extends State<MainFeedScreen> {
   }
 
   String getClientImage(String? imageUrl) {
-    // Retorna la imagen del cliente o la predeterminada si no existe
     return imageUrl ?? 'assets/short_time_assets/ImagenLocal.jpg';
   }
 
@@ -68,7 +64,7 @@ class _MainFeedScreenState extends State<MainFeedScreen> {
               openingTime: client['apertura'] ?? "Sin hora de apertura",
               closingTime: client['cierre'] ?? "Sin hora de cierre",
               onTap: () {
-                // Navegar a la lista de servicios del cliente
+                // Navegar a ClientServicesScreen
                 Navigator.push(
                   context,
                   MaterialPageRoute(
