@@ -1,12 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:provider/provider.dart';
-import 'package:short_time_app/screens/explore_screen.dart';
 import 'package:short_time_app/screens/Reservas_screen.dart';
 import 'package:short_time_app/screens/main_feed_screen.dart';
 import 'package:short_time_app/screens/profile.dart';
+import 'package:short_time_app/widgets/service_search_delegate.dart';
 
 import 'components/Theme_button.dart';
 import 'models/tab_manager.dart';
+import 'screens/client_services_screen.dart';
 
 class Home extends StatefulWidget {
   const Home({
@@ -24,12 +28,28 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int currentScreen = 0;
-  final List<Widget> screens = [MainFeedScreen(), Reservas_Screen(), Profile()];
+  List<dynamic> services = []; // Servicios cargados desde el JSON
+  final List<Widget> screens = [const MainFeedScreen(), Reservas_Screen(), const Profile()];
 
-  void ChangeScreen(int index) {
-    setState(() {
-      currentScreen = index;
-    });
+  @override
+  void initState() {
+    super.initState();
+    loadServices(); // Cargar servicios al inicio
+  }
+
+  Future<void> loadServices() async {
+    try {
+      // Cargar el archivo JSON desde assets
+      final String response =
+      await rootBundle.loadString('assets/test_data.json');
+      final decodedData = json.decode(response);
+
+      setState(() {
+        services = decodedData['servicios']; // Guardar los servicios
+      });
+    } catch (e) {
+      print('Error al cargar servicios: $e');
+    }
   }
 
   @override
@@ -42,15 +62,14 @@ class _HomeState extends State<Home> {
         appBar: AppBar(
           title: Row(
             children: [
-
-              const SizedBox(width: 8), // Espacio entre el texto y el ícono
+              const SizedBox(width: 8),
               Image.asset(
                 isLightMode
-                    ? 'assets/icon/Short_Time Logo Claro.jpg' // Ícono para tema claro
-                    : 'assets/icon/Short_Time Logo Oscuro.jpg',  // Ícono para tema oscuro
-                height: 32, // Ajusta el tamaño del ícono
+                    ? 'assets/icon/Short_Time Logo Claro.jpg'
+                    : 'assets/icon/Short_Time Logo Oscuro.jpg',
+                height: 32,
               ),
-              const SizedBox(width: 16), // Espacio entre el logo y el texto
+              const SizedBox(width: 16),
               Text(
                 widget.appTitle,
                 style: Theme.of(context).textTheme.titleLarge,
@@ -58,7 +77,33 @@ class _HomeState extends State<Home> {
             ],
           ),
           actions: [
-            // Botón para cambiar el tema
+            IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () {
+                if (services.isNotEmpty) {
+                  showSearch(
+                    context: context,
+                    delegate: ClientSearchDelegate(
+                      services: services,
+                      onSelected: (clientId) {
+                        // Navegar a los servicios del cliente seleccionado
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ClientServicesScreen(clientId: clientId),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Cargando servicios, intenta nuevamente.')),
+                  );
+                }
+              },
+            ),
+
             ThemeButton(changeTheme: widget.ChangeThemeMode),
           ],
         ),
