@@ -5,7 +5,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:provider/provider.dart';
 import 'package:short_time_app/screens/Reservas_screen.dart';
 import 'package:short_time_app/screens/main_feed_screen.dart';
-import 'package:short_time_app/screens/profile.dart';
+import 'package:short_time_app/screens/profile.dart'; // Asegúrate de que este archivo esté correctamente enlazado
 import 'package:short_time_app/widgets/service_search_delegate.dart';
 
 import 'components/Theme_button.dart';
@@ -29,7 +29,9 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int currentScreen = 0;
   List<dynamic> services = []; // Servicios cargados desde el JSON
-  final List<Widget> screens = [const MainFeedScreen(), Reservas_Screen(), const Profile()];
+
+  // Corregido: Cambié ProfileScreen por ProfilePage
+  final List<Widget> screens = [const MainFeedScreen(), Reservas_Screen(), ProfilePage()];
 
   @override
   void initState() {
@@ -40,8 +42,7 @@ class _HomeState extends State<Home> {
   Future<void> loadServices() async {
     try {
       // Cargar el archivo JSON desde assets
-      final String response =
-      await rootBundle.loadString('assets/test_data.json');
+      final String response = await rootBundle.loadString('assets/test_data.json');
       final decodedData = json.decode(response);
 
       setState(() {
@@ -91,7 +92,8 @@ class _HomeState extends State<Home> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ClientServicesScreen(clientId: clientId),
+                            builder: (context) =>
+                                ClientServicesScreen(clientId: clientId),
                           ),
                         );
                       },
@@ -104,11 +106,8 @@ class _HomeState extends State<Home> {
                 }
               },
             ),
-
             ThemeButton(changeTheme: widget.ChangeThemeMode),
-
           ],
-
         ),
         bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: Colors.blue,
