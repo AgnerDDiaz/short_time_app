@@ -54,7 +54,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   controller: nameController,
                   decoration: InputDecoration(
                     labelText: 'Name',
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20), // Borde redondeado
+                    ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -70,7 +72,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   controller: emailController,
                   decoration: InputDecoration(
                     labelText: 'Email Address',
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20), // Borde redondeado
+                    ),
                   ),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
@@ -91,7 +95,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   obscureText: !_isPasswordVisible,
                   decoration: InputDecoration(
                     labelText: 'Password',
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20), // Borde redondeado
+                    ),
                     suffixIcon: IconButton(
                       icon: Icon(
                         _isPasswordVisible
@@ -123,7 +129,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   obscureText: !_isPasswordVisible,
                   decoration: InputDecoration(
                     labelText: 'Confirm password',
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20), // Borde redondeado
+                    ),
                     suffixIcon: IconButton(
                       icon: Icon(
                         _isPasswordVisible

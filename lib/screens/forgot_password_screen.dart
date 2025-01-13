@@ -80,7 +80,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       labelText: "Email Address",
-                      border: OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20), // Borde redondeado
+                      ),
                       prefixIcon: Icon(Icons.email),
                     ),
                     validator: (value) {

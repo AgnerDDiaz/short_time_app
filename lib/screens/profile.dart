@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:google_fonts/google_fonts.dart';  // Importa google_fonts
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -35,7 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Perfil"),
+        title: const Text("Profile"),
         backgroundColor: Colors.blue,
       ),
       body: SingleChildScrollView(
@@ -72,7 +73,7 @@ class _ProfilePageState extends State<ProfilePage> {
             // Nombre del usuario
             Text(
               userName,
-              style: const TextStyle(
+              style: GoogleFonts.inter( // Aplicar la fuente "Inter"
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
@@ -81,7 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
             // Correo electrónico del usuario
             Text(
               userEmail,
-              style: const TextStyle(
+              style: GoogleFonts.inter( // Aplicar la fuente "Inter"
                 fontSize: 16,
                 color: Colors.grey,
               ),
@@ -90,35 +91,50 @@ class _ProfilePageState extends State<ProfilePage> {
             // Opciones de perfil
             ListTile(
               leading: const Icon(Icons.miscellaneous_services),
-              title: const Text("Servicios"),
+              title: Text(
+                "Services",
+                style: GoogleFonts.inter(), // Aplicar la fuente "Inter"
+              ),
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {},
             ),
             const Divider(),
             ListTile(
               leading: const Icon(Icons.notifications),
-              title: const Text("Notificaciones"),
+              title: Text(
+                "Notifications",
+                style: GoogleFonts.inter(), // Aplicar la fuente "Inter"
+              ),
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {},
             ),
             const Divider(),
             ListTile(
               leading: const Icon(Icons.color_lens),
-              title: const Text("Apariencia"),
+              title: Text(
+                "Appearance",
+                style: GoogleFonts.inter(), // Aplicar la fuente "Inter"
+              ),
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {},
             ),
             const Divider(),
             ListTile(
               leading: const Icon(Icons.language),
-              title: const Text("Idioma"),
+              title: Text(
+                "Language",
+                style: GoogleFonts.inter(), // Aplicar la fuente "Inter"
+              ),
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {},
             ),
             const Divider(),
             ListTile(
               leading: const Icon(Icons.lock),
-              title: const Text("Privacidad"),
+              title: Text(
+                "Privacy",
+                style: GoogleFonts.inter(), // Aplicar la fuente "Inter"
+              ),
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {},
             ),
@@ -132,12 +148,12 @@ class _ProfilePageState extends State<ProfilePage> {
             onTap: _logout, // Llamar al método de cerrar sesión
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Icon(Icons.logout, color: Colors.blue),
-                SizedBox(width: 5),
+              children: [
+                const Icon(Icons.logout, color: Colors.blue),
+                const SizedBox(width: 5),
                 Text(
-                  "Cerrar Sesión",
-                  style: TextStyle(
+                  "Logout",
+                  style: GoogleFonts.inter( // Aplicar la fuente "Inter"
                     color: Colors.blue,
                     fontWeight: FontWeight.bold,
                   ),
