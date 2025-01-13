@@ -9,6 +9,7 @@ import 'models/auth_manager.dart'; // Clase para manejar la autenticación
 import 'screens/login_screen.dart'; // Pantalla de Login
 import 'screens/registro_screen.dart'; // Pantalla de Registro
 import 'screens/empty_page.dart'; // Importar la página vacía
+import 'screens/forgot_password_screen.dart'; // Importar la pantalla de recuperación de contraseña
 
 void main() {
   runApp(ShortTimeApp());
@@ -61,6 +62,7 @@ class ShortTimeAppState extends State<ShortTimeApp> {
             appTitle: appTitle,
             ChangeThemeMode: ChangeThemeMode,
           ), // Pantalla principal Home
+          '/forgotPassword': (context) => ForgotPasswordScreen(), // Ruta añadida para la pantalla de recuperación
           '/emptyPage': (context) => EmptyPage(), // Página vacía
           '/register': (context) => RegisterScreen(), // Ruta añadida para el registro
         },

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'forgot_password_screen.dart'; // Importar la pantalla de recuperación de contraseña
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/login';
@@ -152,7 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     alignment: Alignment.centerRight,
                     child: InkWell(
                       onTap: () {
-                        Navigator.pushNamed(context, '/emptyPage'); // Redirigir a una página vacía
+                        Navigator.pushNamed(context, ForgotPasswordScreen.routeName); // Redirigir a la pantalla de recuperación de contraseña
                       },
                       child: Text(
                         "Forgot password?",
