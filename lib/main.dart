@@ -5,8 +5,10 @@ import 'package:short_time_app/short_time_themes.dart';
 import 'home.dart';
 import 'models/grocery_manager.dart';
 import 'models/tab_manager.dart';
-import 'screens/login_screen.dart';
-import 'models/auth_manager.dart';
+import 'models/auth_manager.dart'; // Clase para manejar la autenticación
+import 'screens/login_screen.dart'; // Pantalla de Login
+import 'screens/registro_screen.dart'; // Pantalla de Registro
+import 'screens/empty_page.dart'; // Importar la página vacía
 
 void main() {
   runApp(ShortTimeApp());
@@ -45,7 +47,7 @@ class ShortTimeAppState extends State<ShortTimeApp> {
           create: (context) => TabManager(),
         ),
         ChangeNotifierProvider(
-          create: (context) => AuthManager(),
+          create: (context) => AuthManager(), // Importación sin conflicto
         ),
       ],
       child: MaterialApp(
@@ -59,6 +61,8 @@ class ShortTimeAppState extends State<ShortTimeApp> {
             appTitle: appTitle,
             ChangeThemeMode: ChangeThemeMode,
           ), // Pantalla principal Home
+          '/emptyPage': (context) => EmptyPage(), // Página vacía
+          '/register': (context) => RegisterScreen(), // Ruta añadida para el registro
         },
       ),
     );

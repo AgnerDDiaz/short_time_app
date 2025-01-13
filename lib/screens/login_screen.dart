@@ -147,15 +147,80 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   SizedBox(height: 16.0),
 
+                  // Enlace "Forgot password?"
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/emptyPage'); // Redirigir a una página vacía
+                      },
+                      child: Text(
+                        "Forgot password?",
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 16.0),
+
                   // Botón de inicio de sesión
                   _isLoading
                       ? CircularProgressIndicator() // Indicador de carga
                       : ElevatedButton(
                     onPressed: _login,
-                    child: Text("Login"),
+                    child: Text(
+                      "Login",
+                      style: TextStyle(fontSize: 18), // Tamaño del texto
+                    ),
                     style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue, // Color de fondo azul
+                      foregroundColor: Colors.white, // Letra blanca
                       minimumSize: Size(double.infinity, 50),
                     ),
+                  ),
+                  SizedBox(height: 16.0),
+
+                  // Enlace "Register now"
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Not a Client? "),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, '/register'); // Redirigir a la pantalla de registro
+                        },
+                        child: Text(
+                          "Register now",
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 8.0),
+
+                  // Enlace "Are you a Business?"
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Are you a Business? "),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, '/emptyPage'); // Redirigir a una página vacía
+                        },
+                        child: Text(
+                          "Login here",
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
