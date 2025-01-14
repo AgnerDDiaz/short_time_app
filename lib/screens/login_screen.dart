@@ -193,7 +193,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: TextStyle(fontSize: 18),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
+                        backgroundColor: Colors.blueAccent,
                         foregroundColor: Colors.white,
                         minimumSize: const Size(double.infinity, 50),
                         shape: RoundedRectangleBorder(
@@ -207,7 +207,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text("Not a Client? "),
+                        const Text("Don't have an account? "),
                         InkWell(
                           onTap: () {
                             Navigator.pushNamed(context, '/register');
@@ -224,25 +224,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 8.0),
 
-                    // Enlace "Are you a Business?"
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text("Are you a Business? "),
-                        InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(context, '/emptyPage');
-                          },
-                          child: const Text(
-                            "Login here",
-                            style: TextStyle(
-                              color: Colors.blue,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
                   ],
                 ),
               ),

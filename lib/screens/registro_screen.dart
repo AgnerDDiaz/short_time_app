@@ -11,18 +11,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-  TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  bool _isPasswordVisible = false; // Control de visibilidad de la contraseña
-  bool _isTermsAccepted = false; // Estado de la casilla de verificación
+  bool _isPasswordVisible = false;
+  bool _isTermsAccepted = false;
+  int _selectedIndex = 0; // 0 for User, 1 for Client/Company
+  String? _businessType;
+
+  void _clearFields() {
+    nameController.clear();
+    emailController.clear();
+    passwordController.clear();
+    confirmPasswordController.clear();
+    _businessType = null; // Reset business type
+  }
 
   void _register() {
     if (_formKey.currentState!.validate() && _isTermsAccepted) {
-      Navigator.pushReplacementNamed(context, '/login'); // Redirigir al login
+      Navigator.pushReplacementNamed(context, '/login');
     } else if (!_isTermsAccepted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please accept the terms and conditions.')),
+        SnackBar(content: Text('Please accept the Terms and Conditions.')),
       );
     }
   }
@@ -37,127 +46,290 @@ class _RegisterScreenState extends State<RegisterScreen> {
             key: _formKey,
             child: Column(
               children: [
-                // Espaciado adicional al inicio para bajar todo el contenido
-                SizedBox(height: 150),
+                SizedBox(height: 100),
 
-                // Título
-                Text(
-                  'Sign up',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 10),
-                Text('Create an account to get started'),
-                SizedBox(height: 20),
-
-                // Nombre
-                TextFormField(
-                  controller: nameController,
-                  decoration: InputDecoration(
-                    labelText: 'Name',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20), // Borde redondeado
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please enter your name.";
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 15),
-
-                // Email
-                TextFormField(
-                  controller: emailController,
-                  decoration: InputDecoration(
-                    labelText: 'Email Address',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20), // Borde redondeado
-                    ),
-                  ),
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please enter your email.";
-                    }
-                    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+$').hasMatch(value)) {
-                      return "Please enter a valid email address.";
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 15),
-
-                // Contraseña
-                TextFormField(
-                  controller: passwordController,
-                  obscureText: !_isPasswordVisible,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20), // Borde redondeado
-                    ),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _isPasswordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                      ),
-                      onPressed: () {
+                // Content Switcher
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
                         setState(() {
-                          _isPasswordVisible = !_isPasswordVisible;
+                          _selectedIndex = 0;
+                          _clearFields();
                         });
                       },
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please enter a password.";
-                    }
-                    if (value.length < 6) {
-                      return "Password must be at least 6 characters long.";
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 15),
-
-                // Confirmar Contraseña
-                TextFormField(
-                  controller: confirmPasswordController,
-                  obscureText: !_isPasswordVisible,
-                  decoration: InputDecoration(
-                    labelText: 'Confirm password',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20), // Borde redondeado
-                    ),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _isPasswordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
+                      child: Text(
+                        'User',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: _selectedIndex == 0 ? Colors.blue : Colors.grey,
+                        ),
                       ),
-                      onPressed: () {
+                    ),
+                    SizedBox(width: 20),
+                    GestureDetector(
+                      onTap: () {
                         setState(() {
-                          _isPasswordVisible = !_isPasswordVisible;
+                          _selectedIndex = 1;
+                          _clearFields();
                         });
                       },
+                      child: Text(
+                        'Client',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: _selectedIndex == 1 ? Colors.blue : Colors.grey,
+                        ),
+                      ),
                     ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please confirm your password.";
-                    }
-                    if (value != passwordController.text) {
-                      return "Passwords do not match.";
-                    }
-                    return null;
-                  },
+                  ],
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 40),
 
-                // Checkbox de Términos y Condiciones
+                // Dynamic form based on selection
+                if (_selectedIndex == 0) ...[
+                  // Form for User
+                  TextFormField(
+                    controller: nameController,
+                    decoration: InputDecoration(
+                      labelText: 'Name',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter your name.";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    controller: emailController,
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter your email.";
+                      }
+                      // Valid email regex
+                      if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$').hasMatch(value)) {
+                        return "Please enter a valid email.";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    controller: passwordController,
+                    obscureText: !_isPasswordVisible,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isPasswordVisible = !_isPasswordVisible;
+                          });
+                        },
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter a password.";
+                      }
+                      if (value.length < 6) {
+                        return "Password must be at least 6 characters long.";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    controller: confirmPasswordController,
+                    obscureText: !_isPasswordVisible,
+                    decoration: InputDecoration(
+                      labelText: 'Confirm Password',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isPasswordVisible = !_isPasswordVisible;
+                          });
+                        },
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please confirm your password.";
+                      }
+                      if (value != passwordController.text) {
+                        return "Passwords do not match.";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 30),
+                ] else ...[
+                  // Form for Client/Company
+                  TextFormField(
+                    controller: nameController,
+                    decoration: InputDecoration(
+                      labelText: 'Company Name',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter the name.";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    controller: emailController,
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter your email.";
+                      }
+                      // Valid email regex
+                      if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$').hasMatch(value)) {
+                        return "Please enter a valid email.";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    controller: passwordController,
+                    obscureText: !_isPasswordVisible,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isPasswordVisible = !_isPasswordVisible;
+                          });
+                        },
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter a password.";
+                      }
+                      if (value.length < 6) {
+                        return "Password must be at least 6 characters long.";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    controller: confirmPasswordController,
+                    obscureText: !_isPasswordVisible,
+                    decoration: InputDecoration(
+                      labelText: 'Confirm Password',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isPasswordVisible = !_isPasswordVisible;
+                          });
+                        },
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please confirm your password.";
+                      }
+                      if (value != passwordController.text) {
+                        return "Passwords do not match.";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  DropdownButtonFormField<String>(
+                    decoration: InputDecoration(
+                      labelText: 'Business Type',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    items: [
+                      'Restaurant',
+                      'Store',
+                      'Services',
+                      'Other'
+                    ].map((String category) {
+                      return DropdownMenuItem(
+                        value: category,
+                        child: Text(category),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _businessType = value;
+                      });
+                    },
+                    validator: (value) {
+                      if (value == null) {
+                        return "Please select a business type.";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 30),
+                ],
+
+                // Terms and Conditions Checkbox
                 Row(
                   children: [
                     Checkbox(
@@ -176,9 +348,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 30),
 
-                // Botón de registro
+                // Register Button
                 ElevatedButton(
                   onPressed: _register,
                   child: Text(
@@ -186,7 +358,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue, // Color del botón
+                    backgroundColor: Colors.blueAccent,
                     minimumSize: Size(double.infinity, 50),
                   ),
                 ),
