@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:short_time_app/models/ProfileManager.dart';
+import 'package:short_time_app/screens/profile_screen.dart';
 import 'package:short_time_app/short_time_themes.dart';
 
 import 'home.dart';
@@ -50,13 +52,16 @@ class ShortTimeAppState extends State<ShortTimeApp> {
         ChangeNotifierProvider(
           create: (context) => AuthManager(), // Importación sin conflicto
         ),
-      ],
+        ChangeNotifierProvider(
+          create: (context) => ProfileManager(),
+        )],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: theme,
         title: appTitle,
         initialRoute: '/login', // Ahora la ruta inicial es "/login"
         routes: {
+          '/profile': (context) => ProfileScreen(),
           '/login': (context) => LoginScreen(), // Pantalla de Login
           '/home': (context) => Home(
             appTitle: appTitle,
