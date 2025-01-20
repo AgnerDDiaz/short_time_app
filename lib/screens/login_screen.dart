@@ -26,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
       String email = emailController.text;
       String password = passwordController.text;
 
-      if (email == 'user@example.com' && password == 'password123') {
+      if (email == '123@123.com' && password == '123123') {
         setState(() {
           _isLoading = false;
         });

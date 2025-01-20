@@ -1,75 +1,106 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
+import '../screens/client_services_screen.dart';
 
 class ClientCard extends StatelessWidget {
-  final String imageUrl;
-  final String name;
-  final String location;
-  final String openingTime;
-  final String closingTime;
+  final String? imageUrl; // Imagen del cliente (opcional)
+  final String? businessName; // Nombre de la empresa (opcional)
+  final String? location; // Dirección del cliente (opcional)
+  final int clientId; // ID del cliente
+  final String? openingTime; // Hora de apertura (opcional)
+  final String? closingTime; // Hora de cierre (opcional)
   final VoidCallback onTap;
 
   const ClientCard({
     Key? key,
     required this.imageUrl,
-    required this.name,
+    required this.businessName,
     required this.location,
+    required this.clientId,
     required this.openingTime,
     required this.closingTime,
     required this.onTap,
   }) : super(key: key);
 
-  String formatTime(String time) {
-    try {
-      // Convertir la hora de texto a DateTime
-      final parsedTime = DateFormat("HH:mm:ss").parse(time);
-      // Formatear en AM/PM
-      return DateFormat.jm().format(parsedTime);
-    } catch (e) {
-      // Retornar la hora original en caso de error
-      return time;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
-      child: Card(
-        elevation: 4,
-        color: Theme.of(context).cardColor,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 1,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
-                child: Image.asset(
-                  imageUrl,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ClientServicesScreen(clientId: clientId),
+          ),
+        );
+      },
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(
+          maxWidth: 200, // Ancho máximo
+          maxHeight: 250, // Altura máxima
+        ),
+        child: Card(
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+            side: const BorderSide(color: Colors.blue, width: 2), // Borde azul
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Imagen del cliente
+              Container(
+                height: 120,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
+                  image: imageUrl != null
+                      ? DecorationImage(
+                    image: NetworkImage(imageUrl!),
+                    fit: BoxFit.cover,
+                  )
+                      : null,
+                ),
+                child: imageUrl == null
+                    ? const Center(
+                  child: Icon(
+                    Icons.image_not_supported,
+                    size: 50,
+                    color: Colors.grey,
+                  ),
+                )
+                    : null,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Nombre de la empresa
+                    Text(
+                      businessName ?? "Sin Nombre",
+                      style: Theme.of(context).textTheme.titleMedium,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 4),
+                    // Ubicación del cliente
+                    Text(
+                      location ?? "Ubicación no disponible",
+                      style: Theme.of(context).textTheme.bodySmall,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 4),
+                    // Horario del cliente
+                    Text(
+                      "Horario: ${openingTime ?? "No disponible"} - ${closingTime ?? "No disponible"}",
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ],
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(name, style: Theme.of(context).textTheme.titleLarge),
-                  const SizedBox(height: 4),
-                  Text(location, style: Theme.of(context).textTheme.bodyLarge),
-                  const SizedBox(height: 4),
-                  Text(
-                    "${formatTime(openingTime)} - ${formatTime(closingTime)}",
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
