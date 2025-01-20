@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../api/st_api_service.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const routeName = '/register';
@@ -11,18 +12,47 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-  TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _isPasswordVisible = false; // Control de visibilidad de la contraseña
   bool _isTermsAccepted = false; // Estado de la casilla de verificación
 
-  void _register() {
+  void _register() async {
     if (_formKey.currentState!.validate() && _isTermsAccepted) {
-      Navigator.pushReplacementNamed(context, '/login'); // Redirigir al login
-    } else if (!_isTermsAccepted) {
+      try {
+        final success = await StApiService.registerUser(
+            "client",
+            nameController.text,
+            emailController.text,
+            passwordController.text,
+            "",
+            "",
+            "",
+            ""
+        );
+
+        if (mounted) {
+          if (success) {  // Simplificamos la condición
+            await ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Registro Completado!")),
+            );
+            Navigator.pushReplacementNamed(context, '/login'); // Usamos pushReplacement
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Error en el registro. Por favor, intente nuevamente.")),
+            );
+          }
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Error: ${e.toString()}")),
+          );
+        }
+      }
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please accept the terms and conditions.')),
+        const SnackBar(content: Text("Por favor, complete todos los campos y acepte los términos")),
       );
     }
   }

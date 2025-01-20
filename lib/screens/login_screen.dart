@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:short_time_app/api/st_api_service.dart';
 import 'forgot_password_screen.dart'; // Importar la pantalla de recuperación de contraseña
 
 class LoginScreen extends StatefulWidget {
@@ -21,22 +22,30 @@ class _LoginScreenState extends State<LoginScreen> {
         _isLoading = true;
       });
 
-      await Future.delayed(Duration(seconds: 1));
-
       String email = emailController.text;
       String password = passwordController.text;
 
-      if (email == 'user@example.com' && password == 'password123') {
-        setState(() {
-          _isLoading = false;
-        });
-        Navigator.pushReplacementNamed(context, '/home');
-      } else {
-        setState(() {
-          _isLoading = false;
-        });
-        _showErrorDialog("Invalid credentials. Please try again.");
+      try {
+        bool success = await StApiService.loginUser(email, password);
+
+        if (success) {
+
+          Navigator.pushReplacementNamed(context, '/home');
+
+        }
+        else  {
+          _showErrorDialog('Credenciales invalidas. ');
+        }
+      }catch (e){
+        _showErrorDialog('Error de conexion de API');
       }
+      finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+
+
     }
   }
 
