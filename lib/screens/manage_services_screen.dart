@@ -56,6 +56,8 @@ class _ManageServicesScreenState extends State<ManageServicesScreen> {
               Navigator.of(context).pop(); // Cerrar el diálogo
             },
             child: const Text('Cancelar'),
+
+
           ),
           ElevatedButton(
             onPressed: () {
@@ -63,7 +65,8 @@ class _ManageServicesScreenState extends State<ManageServicesScreen> {
               deleteService(serviceId); // Eliminar el servicio
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: const Text('Eliminar'),
+            child: const Text('Eliminar', style: TextStyle(color: Colors.white),
+          ),
           ),
         ],
       ),

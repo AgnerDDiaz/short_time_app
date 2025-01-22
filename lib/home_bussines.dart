@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:short_time_app/screens/customer_reservations_screen.dart';
 import 'package:short_time_app/screens/profile_bussines.dart';
+import 'package:short_time_app/screens/provider_reservations_screen.dart';
 import 'package:short_time_app/screens/reservations_screen.dart';
 
 import 'components/Theme_button.dart';
@@ -23,7 +24,7 @@ class Home_bussines extends StatefulWidget {
 
 class _HomeState extends State<Home_bussines> {
   int currentScreen = 0;
-  final List<Widget> screens = [CustomerReservationsScreen(userId: 3), ReservationsScreen(userId: 1,), ProfilePageBussines()];
+  final List<Widget> screens = [CustomerReservationsScreen(userId: 3), ProviderReservationsScreen(clientId: 1,), ProfilePageBussines()];
 
   void ChangeScreen(int index) {
     setState(() {

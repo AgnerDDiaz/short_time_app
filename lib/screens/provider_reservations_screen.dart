@@ -4,18 +4,17 @@ import 'package:intl/intl.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 
-class CustomerReservationsScreen extends StatefulWidget {
-  final int userId;
+class ProviderReservationsScreen extends StatefulWidget {
+  final int clientId;
 
-  const CustomerReservationsScreen({Key? key, required this.userId}) : super(key: key);
+  const ProviderReservationsScreen({Key? key, required this.clientId}) : super(key: key);
 
   @override
-  State<CustomerReservationsScreen> createState() =>
-      _CustomerReservationsScreenState();
+  State<ProviderReservationsScreen> createState() => _ProviderReservationsScreenState();
 }
 
-class _CustomerReservationsScreenState extends State<CustomerReservationsScreen> {
-  List<Map<String, dynamic>> userReservations = [];
+class _ProviderReservationsScreenState extends State<ProviderReservationsScreen> {
+  List<Map<String, dynamic>> providerReservations = [];
   List<Map<String, dynamic>> reservationsForSelectedDay = [];
   DateTime selectedDate = DateTime.now();
   bool isLoading = true;
@@ -34,42 +33,32 @@ class _CustomerReservationsScreenState extends State<CustomerReservationsScreen>
       final Map<String, dynamic> data = json.decode(response);
 
       // Verificar que las claves del JSON existan
-      if (!data.containsKey('reservations') ||
-          !data.containsKey('services') ||
-          !data.containsKey('users')) {
+      if (!data.containsKey('reservations') || !data.containsKey('services')) {
         throw Exception("Datos incompletos en el archivo JSON.");
       }
 
       final List<dynamic> reservations = data['reservations'];
       final List<dynamic> services = data['services'];
-      final List<dynamic> users = data['users'];
 
-      // Filtrar las reservaciones del usuario actual
-      userReservations = reservations
-          .where((reservation) => reservation['user_id'] == widget.userId)
+      // Filtrar las reservaciones del proveedor actual
+      providerReservations = reservations
+          .where((reservation) {
+        final service = services.firstWhere(
+              (s) => s['id'] == reservation['service_id'] && s['client_id'] == widget.clientId,
+          orElse: () => null,
+        );
+        return service != null;
+      })
           .map<Map<String, dynamic>>((reservation) {
-        // Buscar el servicio relacionado
-        final service = services.cast<Map<String, dynamic>>().firstWhere(
+        final service = services.firstWhere(
               (s) => s['id'] == reservation['service_id'],
           orElse: () => <String, dynamic>{},
         );
 
-        // Buscar el cliente relacionado con el servicio
-        final client = service.isNotEmpty
-            ? users.cast<Map<String, dynamic>>().firstWhere(
-              (u) => u['id'] == service['client_id'],
-          orElse: () => <String, dynamic>{},
-        )
-            : null;
-
         return {
           ...reservation,
-          'service_name': service.isNotEmpty
-              ? service['name'] ?? "Servicio desconocido"
-              : "Servicio desconocido",
-          'business_name': client != null && client.isNotEmpty
-              ? client['business_name'] ?? "Negocio desconocido"
-              : "Negocio desconocido",
+          'service_name': service['name'] ?? "Servicio desconocido",
+          'comment': reservation['comment'] ?? "Sin comentarios",
         };
       }).toList();
 
@@ -93,54 +82,52 @@ class _CustomerReservationsScreenState extends State<CustomerReservationsScreen>
     final selectedDateString = DateFormat('yyyy-MM-dd').format(selectedDate);
 
     setState(() {
-      reservationsForSelectedDay = userReservations.where((reservation) {
+      reservationsForSelectedDay = providerReservations.where((reservation) {
         return reservation['date'] == selectedDateString;
       }).toList();
     });
   }
 
-  void cancelReservation(int reservationId) {
-    setState(() {
-      // Eliminar la reservación de ambas listas
-      userReservations.removeWhere((reservation) => reservation['id'] == reservationId);
-      reservationsForSelectedDay.removeWhere((reservation) => reservation['id'] == reservationId);
-    });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Reservación cancelada con éxito.')),
-    );
-  }
-
-  void showCancelDialog(int reservationId) {
-    showDialog(
+  Future<void> deleteAllReservationsForDay() async {
+    final confirmation = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Cancelar Reservación'),
-        content: const Text('¿Estás seguro de que deseas cancelar esta reservación?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('No'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              cancelReservation(reservationId);
-            },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: const Text('Cancelar', style: TextStyle(color: Colors.white),
-            )
-          ),
-        ],
-      ),
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Confirmar eliminación"),
+          content: const Text("¿Estás seguro de que deseas eliminar todas las reservaciones de este día? Esta acción no se puede deshacer."),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text("No"),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+              child: const Text('Eliminar', style: TextStyle(color: Colors.white),
+              )
+            ),
+          ],
+        );
+      },
     );
+
+    if (confirmation == true) {
+      setState(() {
+        providerReservations.removeWhere((reservation) => reservation['date'] == DateFormat('yyyy-MM-dd').format(selectedDate));
+        reservationsForSelectedDay.clear();
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Todas las reservaciones del día han sido eliminadas.')),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Mis Reservaciones"),
+        title: const Text("Reservaciones"),
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -181,7 +168,7 @@ class _CustomerReservationsScreenState extends State<CustomerReservationsScreen>
             ),
             eventLoader: (day) {
               final dayStr = DateFormat('yyyy-MM-dd').format(day);
-              return userReservations
+              return providerReservations
                   .where((reservation) => reservation['date'] == dayStr)
                   .toList();
             },
@@ -191,7 +178,8 @@ class _CustomerReservationsScreenState extends State<CustomerReservationsScreen>
           Expanded(
             child: reservationsForSelectedDay.isEmpty
                 ? const Center(
-                child: Text("No hay reservaciones para este día."))
+              child: Text("No hay reservaciones para este día."),
+            )
                 : ListView.builder(
               itemCount: reservationsForSelectedDay.length,
               itemBuilder: (context, index) {
@@ -201,21 +189,25 @@ class _CustomerReservationsScreenState extends State<CustomerReservationsScreen>
                       vertical: 8, horizontal: 16),
                   child: ListTile(
                     title: Text(reservation['service_name']),
-                    subtitle: Text(
-                      "Hora: ${reservation['start_time']} - ${reservation['end_time']}\nLocal: ${reservation['business_name']}",
-                    ),
-                    trailing: TextButton(
-                      onPressed: () => showCancelDialog(reservation['id']),
-                      child: const Text(
-                        'Cancelar',
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    ),
+                    subtitle: Text("Comentario: ${reservation['comment']}\nHora: ${reservation['start_time']} - ${reservation['end_time']}"),
                   ),
                 );
               },
             ),
           ),
+          const SizedBox(height: 16),
+          // Botón para eliminar todas las reservaciones
+          ElevatedButton(
+            onPressed: reservationsForSelectedDay.isEmpty
+                ? null
+                : deleteAllReservationsForDay,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+            ),
+            child: const Text("Eliminar todas las reservaciones del día"),
+          ),
+          const SizedBox(height: 16),
         ],
       ),
     );

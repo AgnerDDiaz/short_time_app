@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:short_time_app/screens/customer_reservations_screen.dart';
+import 'package:short_time_app/screens/provider_reservations_screen.dart';
 import 'package:short_time_app/short_time_themes.dart';
 
 import 'home.dart';
@@ -73,6 +75,8 @@ class ShortTimeAppState extends State<ShortTimeApp> {
           '/add_service': (context) => AddServiceScreen(), // Agrega esta línea
           '/manageServices': (context) => ManageServicesScreen(clientId: 1),
           '/manageAvailability': (context) => ManageAvailabilityScreen(clientId: 1),
+          '/customerReservations': (context) => CustomerReservationsScreen(userId: 3),
+          '/providerReservations': (context) => ProviderReservationsScreen(clientId: 1),
           // Usa un clientId de prueba
 
         },
