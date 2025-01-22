@@ -2,15 +2,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:google_fonts/google_fonts.dart';  // Importa google_fonts
-import 'package:short_time_app/screens/add_service_screen.dart';
 
 
-class ProfilePage extends StatefulWidget {
+class ProfilePageBussines extends StatefulWidget {
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  _ProfilePageBussinesState createState() => _ProfilePageBussinesState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageBussinesState extends State<ProfilePageBussines> {
   File? _profileImage;
 
   // Datos ficticios del usuario (puedes reemplazarlos por datos reales o dinámicos)
@@ -94,21 +93,32 @@ class _ProfilePageState extends State<ProfilePage> {
             const Divider(),
             ListTile(
               leading: Icon(Icons.list),
-              title: Text('bussines prueba'),
+              title: Text('Manage Availability'),
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {
-                Navigator.pushNamed(context, '/homebussines');
+                Navigator.pushNamed(context, '/manageAvailability');
               },
             ),
             const Divider(),
             ListTile(
-              leading: const Icon(Icons.nature_people),
+              leading: const Icon(Icons.add_business),
               title: Text(
-                "Modificar Perfil",
+                "Add Service",
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, '/add_service'); // Navega a la nueva pantalla
+              },
+            ),
+            const Divider(),
+            ListTile(
+              leading: Icon(Icons.list),
+              title: Text('Manage Services'),
+              trailing: const Icon(Icons.arrow_forward_ios),
+              onTap: () {
+                Navigator.pushNamed(context, '/manageServices');
+              },
             ),
             const Divider(),
             ListTile(
