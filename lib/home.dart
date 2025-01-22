@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:provider/provider.dart';
+import 'package:short_time_app/screens/customer_reservations_screen.dart';
 import 'package:short_time_app/screens/main_feed_screen.dart';
 import 'package:short_time_app/screens/profile.dart'; // Asegúrate de que este archivo esté correctamente enlazado
 import 'package:short_time_app/screens/reservations_screen.dart';
@@ -33,7 +34,8 @@ class _HomeState extends State<Home> {
   // Lista de pantallas (Reservas utiliza un userId de prueba por ahora)
   final List<Widget> screens = [
     const MainFeedScreen(),
-    ReservationsScreen(userId: 3,), // Usando userId de prueba
+    CustomerReservationsScreen(userId: 3),
+    //ReservationsScreen(userId: 3,), // Usando userId de prueba
     ProfilePage(),
   ];
 

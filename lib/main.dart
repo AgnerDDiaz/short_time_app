@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:short_time_app/short_time_themes.dart';
 
 import 'home.dart';
+import 'home_bussines.dart';
 import 'models/tab_manager.dart';
 import 'models/auth_manager.dart'; // Clase para manejar la autenticación
 import 'screens/add_service_screen.dart';
@@ -62,7 +63,11 @@ class ShortTimeAppState extends State<ShortTimeApp> {
           '/home': (context) => Home(
             appTitle: appTitle,
             ChangeThemeMode: ChangeThemeMode,
-          ), // Pantalla principal Home
+          ),
+          '/homebussines': (context) => Home_bussines(
+            appTitle: appTitle,
+            ChangeThemeMode: ChangeThemeMode,
+          ),// Pantalla principal Home
           '/forgotPassword': (context) => ForgotPasswordScreen(), // Ruta añadida para la pantalla de recuperación
           '/register': (context) => RegisterScreen(), // Ruta añadida para el registro
           '/add_service': (context) => AddServiceScreen(), // Agrega esta línea
