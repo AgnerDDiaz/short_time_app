@@ -167,42 +167,42 @@
   "availability": [
     {
       "id": 1,
-      "service_id": 1,
+      "user_id": 1,
       "day": "monday",
       "opening_time": "09:00",
       "closing_time": "17:00"
     },
     {
       "id": 2,
-      "service_id": 1,
+      "user_id": 1,
       "day": "tuesday",
       "opening_time": "09:00",
       "closing_time": "17:00"
     },
     {
       "id": 3,
-      "service_id": 2,
+      "user_id": 2,
       "day": "friday",
       "opening_time": "10:00",
       "closing_time": "18:00"
     },
     {
       "id": 4,
-      "service_id": 3,
+      "user_id": 3,
       "day": "thursday",
       "opening_time": "08:00",
       "closing_time": "16:00"
     },
     {
       "id": 5,
-      "service_id": 4,
+      "user_id": 4,
       "day": "saturday",
       "opening_time": "10:00",
       "closing_time": "14:00"
     },
     {
       "id": 6,
-      "service_id": 5,
+      "user_id": 5,
       "day": "wednesday",
       "opening_time": "10:00",
       "closing_time": "18:00"

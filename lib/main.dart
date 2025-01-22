@@ -7,6 +7,7 @@ import 'models/tab_manager.dart';
 import 'models/auth_manager.dart'; // Clase para manejar la autenticación
 import 'screens/add_service_screen.dart';
 import 'screens/login_screen.dart'; // Pantalla de Login
+import 'screens/manage_services_screen.dart';
 import 'screens/registro_screen.dart'; // Pantalla de Registro
 import 'screens/forgot_password_screen.dart'; // Importar la pantalla de recuperación de contraseña
 
@@ -64,6 +65,8 @@ class ShortTimeAppState extends State<ShortTimeApp> {
           '/forgotPassword': (context) => ForgotPasswordScreen(), // Ruta añadida para la pantalla de recuperación
           '/register': (context) => RegisterScreen(), // Ruta añadida para el registro
           '/add_service': (context) => AddServiceScreen(), // Agrega esta línea
+          '/manageServices': (context) => ManageServicesScreen(clientId: 1), // Usa un clientId de prueba
+
         },
       ),
     );

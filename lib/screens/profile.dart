@@ -91,14 +91,26 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             const SizedBox(height: 20),
             // Opciones de perfil
+            const Divider(),
             ListTile(
-              leading: const Icon(Icons.miscellaneous_services),
+              leading: const Icon(Icons.add_business),
               title: Text(
-                "Services",
-                style: GoogleFonts.inter(), // Aplicar la fuente "Inter"
+                "Add Service",
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
               trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, '/add_service'); // Navega a la nueva pantalla
+              },
+            ),
+            const Divider(),
+            ListTile(
+              leading: Icon(Icons.list),
+              title: Text('Manage Services'),
+              trailing: const Icon(Icons.arrow_forward_ios),
+              onTap: () {
+                Navigator.pushNamed(context, '/manageServices');
+              },
             ),
             const Divider(),
             ListTile(
@@ -120,28 +132,7 @@ class _ProfilePageState extends State<ProfilePage> {
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {},
             ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.add_business),
-              title: Text(
-                "Add Service",
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () {
-                Navigator.pushNamed(context, '/add_service'); // Navega a la nueva pantalla
-              },
-            ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.lock),
-              title: Text(
-                "Privacy",
-                style: GoogleFonts.inter(), // Aplicar la fuente "Inter"
-              ),
-              trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () {},
-            ),
+
           ],
         ),
       ),

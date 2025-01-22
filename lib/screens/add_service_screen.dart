@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class AddServiceScreen extends StatefulWidget {
   const AddServiceScreen({Key? key}) : super(key: key);
@@ -15,42 +14,17 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
   final TextEditingController servicePriceController = TextEditingController();
   final TextEditingController serviceDurationController = TextEditingController();
 
-  TimeOfDay? openingTime;
-  TimeOfDay? closingTime;
-
   void _clearFields() {
     serviceNameController.clear();
     serviceDescriptionController.clear();
     servicePriceController.clear();
     serviceDurationController.clear();
-    setState(() {
-      openingTime = null;
-      closingTime = null;
-    });
-  }
-
-  Future<void> _selectTime(BuildContext context, bool isOpeningTime) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    );
-    if (picked != null) {
-      setState(() {
-        if (isOpeningTime) {
-          openingTime = picked;
-        } else {
-          closingTime = picked;
-        }
-      });
-    }
   }
 
   void _addService() {
     if (_formKey.currentState!.validate()) {
       // Simular el registro del servicio
-      setState(() {
-        _clearFields();
-      });
+      _clearFields();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Service registered successfully!')),
       );
@@ -78,9 +52,11 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                 // Nombre del servicio
                 TextFormField(
                   controller: serviceNameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Service Name',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: 'Nombre del Servicio',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -97,9 +73,11 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                 // Descripción del servicio
                 TextFormField(
                   controller: serviceDescriptionController,
-                  decoration: const InputDecoration(
-                    labelText: 'Service Description',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: 'Descripción',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                   ),
                   maxLines: 3,
                   validator: (value) {
@@ -118,9 +96,11 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                 TextFormField(
                   controller: servicePriceController,
                   keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'Price (\$)',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: 'Precio (\$)',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -139,9 +119,11 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                 TextFormField(
                   controller: serviceDurationController,
                   keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'Duration (minutes)',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: 'Duración (minutos)',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -154,50 +136,6 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 16.0),
-
-                // Tiempo de apertura y cierre
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Opening Time'),
-                        ElevatedButton(
-                          onPressed: () => _selectTime(context, true),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue,
-                          ),
-                          child: Text(
-                            openingTime == null
-                                ? 'Select Time'
-                                : openingTime!.format(context),
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Closing Time'),
-                        ElevatedButton(
-                          onPressed: () => _selectTime(context, false),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue,
-                          ),
-                          child: Text(
-                            closingTime == null
-                                ? 'Select Time'
-                                : closingTime!.format(context),
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
                 const SizedBox(height: 32.0),
 
                 // Botón de agregar servicio
@@ -207,6 +145,10 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                     onPressed: _addService,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
+                      minimumSize: const Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                     ),
                     child: const Text('Add Service',
                         style: TextStyle(color: Colors.white)),
