@@ -93,6 +93,15 @@ class _ProfilePageState extends State<ProfilePage> {
             // Opciones de perfil
             const Divider(),
             ListTile(
+              leading: Icon(Icons.list),
+              title: Text('Manage Availability'),
+              trailing: const Icon(Icons.arrow_forward_ios),
+              onTap: () {
+                Navigator.pushNamed(context, '/manageAvailability');
+              },
+            ),
+            const Divider(),
+            ListTile(
               leading: const Icon(Icons.add_business),
               title: Text(
                 "Add Service",
