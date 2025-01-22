@@ -22,16 +22,16 @@ class _LoginScreenState extends State<LoginScreen> {
         _isLoading = true;
       });
 
-      String email = emailController.text;
-      String password = passwordController.text;
-
       try {
-        bool success = await StApiService.loginUser(email, password);
+        final loginResponse = await StApiService.loginUser(
+            emailController.text,
+            passwordController.text
+        );
 
-        if (success) {
+        if (!mounted)return;
 
-          Navigator.pushReplacementNamed(context, '/home');
-
+        if(loginResponse.success){
+          //Navigator.pushReplacement(context, '')
         }
         else  {
           _showErrorDialog('Credenciales invalidas. ');

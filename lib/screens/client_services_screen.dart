@@ -1,9 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:flutter/services.dart' show rootBundle;
-
 import '../models/rating.dart';
-import 'availability_screen.dart'; // Pantalla de disponibilidad
+import 'availability_screen.dart';
+import '/api/st_api_service.dart';
 
 class ClientServicesScreen extends StatefulWidget {
   final int clientId;
@@ -15,11 +14,12 @@ class ClientServicesScreen extends StatefulWidget {
 }
 
 class _ClientServicesScreenState extends State<ClientServicesScreen> {
-  Map<String, dynamic>? clientData; // Información del cliente
-  List<Map<String, dynamic>> clientServices = []; // Servicios del cliente
-  List<Rating> ratings = []; // Calificaciones del cliente
-  bool isLoading = true; // Indicador de carga
-  String errorMessage = ""; // Mensaje de error en caso de problemas
+  List<dynamic> clients = [];  // Agregar esta lista
+  Map<String, dynamic>? clientData;
+  List<Map<String, dynamic>> clientServices = [];
+  List<Rating> ratings = [];
+  bool isLoading = true;
+  String errorMessage = "";
 
   @override
   void initState() {
@@ -29,75 +29,39 @@ class _ClientServicesScreenState extends State<ClientServicesScreen> {
 
   Future<void> loadClientData() async {
     try {
-      // Cargar el archivo JSON
-      final String response = await rootBundle.loadString('assets/test_data.json');
-      final Map<String, dynamic> decodedData = json.decode(response);
+      setState(() {
+        isLoading = true;
+        errorMessage = '';
+      });
 
-      // Filtrar información del cliente basado en clientId
-      final clients = decodedData['users'] ?? [];
-      final services = decodedData['services'] ?? [];
-
-      clientData = clients.firstWhere(
-            (client) => client['id'] == widget.clientId,
-        orElse: () => null,
-      );
+      // Obtener información del cliente usando la API
+      clientData = await StApiService.getClientInfo(widget.clientId);
 
       // Si no se encuentra el cliente, mostrar un error
       if (clientData == null) {
         setState(() {
-          errorMessage = "Cliente no encontrado.";
+          errorMessage = 'Cliente no encontrado';
           isLoading = false;
         });
         return;
       }
 
-      // Filtrar servicios asociados al cliente
-      clientServices = services
-          .where((service) => service['client_id'] == widget.clientId)
-          .map<Map<String, dynamic>>((service) => Map<String, dynamic>.from(service))
-          .toList();
+      // Obtener servicios del cliente usando la API
+      clientServices = await StApiService.getClientServices(widget.clientId);
 
-      // Cargar comentarios relacionados con los servicios del cliente
-      ratings = await loadRatings(widget.clientId);
+      // Por ahora, dejamos los ratings vacíos
+      ratings = [];
 
       setState(() {
-        isLoading = false; // Finalizar carga
+        isLoading = false;
       });
     } catch (e) {
       setState(() {
-        errorMessage = "Error al cargar los datos: $e";
+        errorMessage = 'Error al cargar los datos: $e';
         isLoading = false;
       });
     }
   }
-
-  Future<List<Rating>> loadRatings(int clientId) async {
-    try {
-      // Cargar datos del JSON
-      final String response = await rootBundle.loadString('assets/test_data.json');
-      final Map<String, dynamic> data = json.decode(response);
-
-      // Filtrar servicios del cliente
-      final services = data['services']
-          ?.where((service) => service['client_id'] == clientId)
-          ?.toList() ?? [];
-
-      // Obtener los IDs de los servicios asociados al cliente
-      final serviceIds = services.map((service) => service['id']).toList();
-
-      // Filtrar comentarios relacionados con los servicios
-      final ratings = data['ratings']
-          ?.where((rating) => serviceIds.contains(rating['service_id']))
-          ?.map<Rating>((rating) => Rating.fromJson(rating))
-          ?.toList() ?? [];
-
-      return ratings;
-    } catch (e) {
-      print("Error al cargar los comentarios: $e");
-      return [];
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -274,3 +238,10 @@ class _ClientServicesScreenState extends State<ClientServicesScreen> {
     );
   }
 }
+
+
+
+
+
+
+
