@@ -1,234 +1,267 @@
 {
-  "usuario": [
+  "users": [
     {
-      "idusuario": 1,
-      "rol": "cliente",
-      "nombre": "Juan P\u00e9rez",
-      "contrase\u00f1a": "hashed_password",
-      "email": "juan.perez@ejemplo.com",
-      "foto": null,
-      "ubicacion": "Av. Principal #123, Ciudad, Pa\u00eds",
-      "apertura": "09:00:00",
-      "cierre": "18:00:00",
-      "telefono": "+123456789"
+      "id": 1,
+      "role": "client",
+      "name": "Juan Pérez",
+      "email": "juan.perez@example.com",
+      "password_hash": "hashed_password_1",
+      "profile_picture": null,
+      "business_name": "Barbería Juan",
+      "business_address": "Av. Principal #123, Ciudad, País",
+      "phone_number": "+123456789"
     },
     {
-      "idusuario": 2,
-      "rol": "cliente",
-      "nombre": "Mar\u00eda L\u00f3pez",
-      "contrase\u00f1a": "hashed_password",
-      "email": "maria.lopez@ejemplo.com",
-      "foto": "https://example.com/profile2.jpg",
-      "ubicacion": "Calle Secundaria #456, Ciudad, Pa\u00eds",
-      "apertura": "10:00:00",
-      "cierre": "20:00:00",
-      "telefono": "+123123123"
+      "id": 2,
+      "role": "client",
+      "name": "María López",
+      "email": "maria.lopez@example.com",
+      "password_hash": "hashed_password_2",
+      "profile_picture": "https://example.com/profile2.jpg",
+      "business_name": "Salón de María",
+      "business_address": "Calle Secundaria #456, Ciudad, País",
+      "phone_number": "+123123123"
     },
     {
-      "idusuario": 3,
-      "rol": "cliente",
-      "nombre": "Carlos M\u00e9ndez",
-      "contrase\u00f1a": "hashed_password",
-      "email": "carlos.mendez@ejemplo.com",
-      "foto": "https://example.com/profile3.jpg",
-      "ubicacion": "Calle Ejemplo #789, Ciudad, Pa\u00eds",
-      "apertura": "08:00:00",
-      "cierre": "17:00:00",
-      "telefono": "+456456456"
+      "id": 3,
+      "role": "user",
+      "name": "Carlos Méndez",
+      "email": "carlos.mendez@example.com",
+      "password_hash": "hashed_password_3",
+      "profile_picture": null,
+      "business_name": null,
+      "business_address": null,
+      "phone_number": "+456456456"
     },
     {
-      "idusuario": 4,
-      "rol": "cliente",
-      "nombre": "Sof\u00eda Garc\u00eda",
-      "contrase\u00f1a": "hashed_password",
-      "email": "sofia.garcia@ejemplo.com",
-      "foto": "https://example.com/profile4.jpg",
-      "ubicacion": "Plaza Central, Ciudad, Pa\u00eds",
-      "apertura": "11:00:00",
-      "cierre": "19:00:00",
-      "telefono": "+789789789"
+      "id": 4,
+      "role": "client",
+      "name": "Sofía García",
+      "email": "sofia.garcia@example.com",
+      "password_hash": "hashed_password_4",
+      "profile_picture": "https://example.com/profile4.jpg",
+      "business_name": "Consultoría Sofía",
+      "business_address": "Plaza Central, Ciudad, País",
+      "phone_number": "+789789789"
     },
     {
-      "idusuario": 5,
-      "rol": "cliente",
-      "nombre": "Pedro Fern\u00e1ndez",
-      "contrase\u00f1a": "hashed_password",
-      "email": "pedro.fernandez@ejemplo.com",
-      "foto": "https://example.com/profile5.jpg",
-      "ubicacion": "Zona Norte, Ciudad, Pa\u00eds",
-      "apertura": "10:00:00",
-      "cierre": "16:00:00",
-      "telefono": "+112112112"
+      "id": 5,
+      "role": "client",
+      "name": "Pedro Fernández",
+      "email": "pedro.fernandez@example.com",
+      "password_hash": "hashed_password_5",
+      "profile_picture": null,
+      "business_name": "Barbería Pedro",
+      "business_address": "Zona Norte, Ciudad, País",
+      "phone_number": "+112112112"
     },
     {
-      "idusuario": 6,
-      "rol": "cliente",
-      "nombre": "Luc\u00eda Rodr\u00edguez",
-      "contrase\u00f1a": "hashed_password",
-      "email": "lucia.rodriguez@ejemplo.com",
-      "foto": "https://example.com/profile6.jpg",
-      "ubicacion": "Centro Hist\u00f3rico, Ciudad, Pa\u00eds",
-      "apertura": "09:00:00",
-      "cierre": "18:00:00",
-      "telefono": "+113113113"
+      "id": 6,
+      "role": "client",
+      "name": "Luis Ramos",
+      "email": "luis.ramos@example.com",
+      "password_hash": "hashed_password_6",
+      "profile_picture": null,
+      "business_name": "Luis Barbería",
+      "business_address": "Calle Nueva #789, Ciudad, País",
+      "phone_number": "+987654321"
+    },
+    {
+      "id": 7,
+      "role": "client",
+      "name": "Ana Torres",
+      "email": "ana.torres@example.com",
+      "password_hash": "hashed_password_7",
+      "profile_picture": "https://example.com/profile7.jpg",
+      "business_name": "Consultoría Ana",
+      "business_address": "Av. Tercera #567, Ciudad, País",
+      "phone_number": "+321321321"
     }
   ],
-  "servicios": [
+  "categories": [
     {
-      "idservicio": 1,
-      "nombre": "Corte de Cabello",
-      "descripcion": "Corte de cabello profesional para hombres y mujeres.",
-      "precio": 15.5,
-      "categoria": "Barber\u00eda",
-      "calificacion": "4.5",
-      "idusuario": 1
+      "id": 1,
+      "name": "Barbería"
     },
     {
-      "idservicio": 2,
-      "nombre": "Manicure y Pedicure",
-      "descripcion": "Cuidado completo de u\u00f1as y pies.",
-      "precio": 25.0,
-      "categoria": "Sal\u00f3n de Belleza",
-      "calificacion": "4.8",
-      "idusuario": 2
+      "id": 2,
+      "name": "Salón de Belleza"
     },
     {
-      "idservicio": 3,
-      "nombre": "Servicio Cliente 3",
-      "descripcion": "Descripci\u00f3n del servicio para cliente 3.",
-      "precio": 21,
-      "categoria": "Categor\u00eda 3",
-      "calificacion": "4.3",
-      "idusuario": 3
-    },
-    {
-      "idservicio": 4,
-      "nombre": "Servicio Cliente 4",
-      "descripcion": "Descripci\u00f3n del servicio para cliente 4.",
-      "precio": 23,
-      "categoria": "Categor\u00eda 4",
-      "calificacion": "4.4",
-      "idusuario": 4
-    },
-    {
-      "idservicio": 5,
-      "nombre": "Servicio Cliente 5",
-      "descripcion": "Descripci\u00f3n del servicio para cliente 5.",
-      "precio": 25,
-      "categoria": "Categor\u00eda 5",
-      "calificacion": "4.5",
-      "idusuario": 5
-    },
-    {
-      "idservicio": 6,
-      "nombre": "Servicio Cliente 6",
-      "descripcion": "Descripci\u00f3n del servicio para cliente 6.",
-      "precio": 27,
-      "categoria": "Categor\u00eda 6",
-      "calificacion": "4.6",
-      "idusuario": 6
+      "id": 3,
+      "name": "Consultoría"
     }
   ],
-  "reservacion": [
+  "services": [
     {
-      "idreservacion": 1,
-      "idusuario": 16,
-      "idservicio": 1,
-      "fecha": "2025-01-15",
-      "estatus": "pendiente",
-      "comentario": "Por favor, utilizar tijeras para corte."
+      "id": 1,
+      "client_id": 1,
+      "name": "Corte de Cabello",
+      "description": "Corte profesional para hombres y mujeres.",
+      "price": "15.50",
+      "category_id": 1,
+      "rating": "4.5",
+      "service_duration": 30
     },
     {
-      "idreservacion": 2,
-      "idusuario": 17,
-      "idservicio": 2,
-      "fecha": "2025-01-16",
-      "estatus": "confirmada",
-      "comentario": "Necesito que el manicure sea de color rojo."
+      "id": 2,
+      "client_id": 2,
+      "name": "Manicure y Pedicure",
+      "description": "Cuidado completo de uñas y pies.",
+      "price": "25.00",
+      "category_id": 2,
+      "rating": "4.8",
+      "service_duration": 60
     },
     {
-      "idreservacion": 3,
-      "idusuario": 17,
-      "idservicio": 3,
-      "fecha": "2025-01-11",
-      "estatus": "confirmada",
-      "comentario": "Comentario para la reservaci\u00f3n 1 del cliente 3."
+      "id": 3,
+      "client_id": 4,
+      "name": "Asesoría Financiera",
+      "description": "Consultoría en finanzas personales y empresariales.",
+      "price": "50.00",
+      "category_id": 3,
+      "rating": "4.7",
+      "service_duration": 90
     },
     {
-      "idreservacion": 4,
-      "idusuario": 18,
-      "idservicio": 3,
-      "fecha": "2025-01-12",
-      "estatus": "pendiente",
-      "comentario": "Comentario para la reservaci\u00f3n 2 del cliente 3."
+      "id": 4,
+      "client_id": 5,
+      "name": "Barba y Bigote",
+      "description": "Recorte y cuidado especializado de barba y bigote.",
+      "price": "20.00",
+      "category_id": 1,
+      "rating": "4.6",
+      "service_duration": 30
     },
     {
-      "idreservacion": 5,
-      "idusuario": 17,
-      "idservicio": 4,
-      "fecha": "2025-01-11",
-      "estatus": "confirmada",
-      "comentario": "Comentario para la reservaci\u00f3n 1 del cliente 4."
+      "id": 5,
+      "client_id": 6,
+      "name": "Corte de Barba",
+      "description": "Corte y cuidado de barba personalizado.",
+      "price": "18.00",
+      "category_id": 1,
+      "rating": "4.9",
+      "service_duration": 30
     },
     {
-      "idreservacion": 6,
-      "idusuario": 18,
-      "idservicio": 4,
-      "fecha": "2025-01-12",
-      "estatus": "pendiente",
-      "comentario": "Comentario para la reservaci\u00f3n 2 del cliente 4."
+      "id": 6,
+      "client_id": 1,
+      "name": "Corte de Cabello largo",
+      "description": "Corte profesional para cabello largo.",
+      "price": "18.50",
+      "category_id": 1,
+      "rating": "4.5",
+      "service_duration": 45
     },
     {
-      "idreservacion": 7,
-      "idusuario": 17,
-      "idservicio": 5,
-      "fecha": "2025-01-11",
-      "estatus": "confirmada",
-      "comentario": "Comentario para la reservaci\u00f3n 1 del cliente 5."
-    },
-    {
-      "idreservacion": 8,
-      "idusuario": 18,
-      "idservicio": 5,
-      "fecha": "2025-01-12",
-      "estatus": "pendiente",
-      "comentario": "Comentario para la reservaci\u00f3n 2 del cliente 5."
-    },
-    {
-      "idreservacion": 9,
-      "idusuario": 17,
-      "idservicio": 6,
-      "fecha": "2025-01-11",
-      "estatus": "confirmada",
-      "comentario": "Comentario para la reservaci\u00f3n 1 del cliente 6."
-    },
-    {
-      "idreservacion": 10,
-      "idusuario": 18,
-      "idservicio": 6,
-      "fecha": "2025-01-12",
-      "estatus": "pendiente",
-      "comentario": "Comentario para la reservaci\u00f3n 2 del cliente 6."
+      "id": 7,
+      "client_id": 7,
+      "name": "Consultoría Legal",
+      "description": "Asesoramiento legal especializado.",
+      "price": "100.00",
+      "category_id": 3,
+      "rating": "5.0",
+      "service_duration": 120
     }
   ],
-  "rese\u00f1a": [
+  "availability": [
     {
-      "idrese\u00f1a": 1,
-      "idservicio": 1,
-      "idusuario": 16,
-      "calificacion": 5,
-      "comentario": "El servicio fue excelente, \u00a1muy recomendado!",
-      "respuesta": "Gracias por tu comentario, Ana."
-    }
-  ],
-  "servicio_favoritos": [
-    {
-      "servicio": 1,
-      "idusuario": 16
+      "id": 1,
+      "service_id": 1,
+      "day": "monday",
+      "opening_time": "09:00",
+      "closing_time": "17:00"
     },
     {
-      "servicio": 2,
-      "idusuario": 17
+      "id": 2,
+      "service_id": 1,
+      "day": "tuesday",
+      "opening_time": "09:00",
+      "closing_time": "17:00"
+    },
+    {
+      "id": 3,
+      "service_id": 2,
+      "day": "friday",
+      "opening_time": "10:00",
+      "closing_time": "18:00"
+    },
+    {
+      "id": 4,
+      "service_id": 3,
+      "day": "thursday",
+      "opening_time": "08:00",
+      "closing_time": "16:00"
+    },
+    {
+      "id": 5,
+      "service_id": 4,
+      "day": "saturday",
+      "opening_time": "10:00",
+      "closing_time": "14:00"
+    },
+    {
+      "id": 6,
+      "service_id": 5,
+      "day": "wednesday",
+      "opening_time": "10:00",
+      "closing_time": "18:00"
+    }
+  ],
+  "reservations": [
+    {
+      "id": 1,
+      "user_id": 3,
+      "service_id": 1,
+      "date": "2025-01-15",
+      "start_time": "10:00",
+      "end_time": "11:00",
+      "status": "pending",
+      "comment": "Por favor, usar tijeras para el corte."
+    },
+    {
+      "id": 2,
+      "user_id": 3,
+      "service_id": 2,
+      "date": "2025-01-16",
+      "start_time": "11:00",
+      "end_time": "12:00",
+      "status": "confirmed",
+      "comment": "Me gustaría un color rojo para el manicure."
+    },
+    {
+      "id": 3,
+      "user_id": 3,
+      "service_id": 3,
+      "date": "2025-01-17",
+      "start_time": "14:00",
+      "end_time": "15:00",
+      "status": "pending",
+      "comment": "Necesito una revisión rápida de mi plan financiero."
+    }
+  ],
+  "ratings": [
+    {
+      "id": 1,
+      "user_id": 3,
+      "service_id": 1,
+      "reservation_id": 1,
+      "comment": "Servicio excelente, muy recomendado.",
+      "response": "Gracias por tu comentario.",
+      "commentDate": "2025-01-15T14:30:00Z",
+      "responseDate": "2025-01-15T15:00:00Z",
+      "rating": "5.0"
+    },
+    {
+      "id": 2,
+      "user_id": 3,
+      "service_id": 2,
+      "reservation_id": 2,
+      "comment": "Buen trabajo, aunque tardaron un poco.",
+      "response": "Gracias por tu paciencia.",
+      "commentDate": "2025-01-16T12:00:00Z",
+      "responseDate": "2025-01-16T12:30:00Z",
+      "rating": "4.0"
     }
   ]
 }

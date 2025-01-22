@@ -15,7 +15,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   provider: ^6.1.2
   http: ^1.2.2
-  shared_preferences: ^2.0.15
+  shared_preferences: ^2.1.0
   intl: ^0.18.0
   table_calendar: ^3.0.6 # Reemplaza con la última versión disponible
 
@@ -42,6 +42,7 @@ flutter:
     - assets/grocery_pics/
     - assets/icon/
     - assets/short_time_assets/ImagenLocal.jpg
+    - assets/profile_pics/person_cesare.jpeg
 
   fonts:
     - family: Inter
