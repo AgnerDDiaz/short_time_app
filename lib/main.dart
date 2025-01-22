@@ -3,12 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:short_time_app/short_time_themes.dart';
 
 import 'home.dart';
-import 'models/grocery_manager.dart';
 import 'models/tab_manager.dart';
 import 'models/auth_manager.dart'; // Clase para manejar la autenticación
+import 'screens/add_service_screen.dart';
 import 'screens/login_screen.dart'; // Pantalla de Login
 import 'screens/registro_screen.dart'; // Pantalla de Registro
-import 'screens/empty_page.dart'; // Importar la página vacía
 import 'screens/forgot_password_screen.dart'; // Importar la pantalla de recuperación de contraseña
 
 void main() {
@@ -42,7 +41,7 @@ class ShortTimeAppState extends State<ShortTimeApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => GroceryManager(),
+          create: (context) => TabManager(),
         ),
         ChangeNotifierProvider(
           create: (context) => TabManager(),
@@ -63,8 +62,8 @@ class ShortTimeAppState extends State<ShortTimeApp> {
             ChangeThemeMode: ChangeThemeMode,
           ), // Pantalla principal Home
           '/forgotPassword': (context) => ForgotPasswordScreen(), // Ruta añadida para la pantalla de recuperación
-          '/emptyPage': (context) => EmptyPage(), // Página vacía
           '/register': (context) => RegisterScreen(), // Ruta añadida para el registro
+          '/add_service': (context) => AddServiceScreen(), // Agrega esta línea
         },
       ),
     );

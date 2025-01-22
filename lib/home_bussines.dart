@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:short_time_app/screens/explore_screen.dart';
-import 'package:short_time_app/screens/Reservas_screen.dart';
-import 'package:short_time_app/screens/Profile_bussines.dart';
+import 'package:short_time_app/screens/main_feed_screen.dart';
+import 'package:short_time_app/screens/profile.dart';
+import 'package:short_time_app/screens/reservations_screen.dart';
 
 import 'components/Theme_button.dart';
 import 'models/tab_manager.dart';
@@ -23,7 +23,7 @@ class Home_bussines extends StatefulWidget {
 
 class _HomeState extends State<Home_bussines> {
   int currentScreen = 0;
-  final List<Widget> screens = [ExploreScreen(), Reservas_Screen(), Perfil_bussines()];
+  final List<Widget> screens = [MainFeedScreen(), ReservationsScreen(userId: 1,), ProfilePage()];
 
   void ChangeScreen(int index) {
     setState(() {

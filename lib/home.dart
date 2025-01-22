@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:provider/provider.dart';
-import 'package:short_time_app/screens/Reservas_screen.dart';
 import 'package:short_time_app/screens/main_feed_screen.dart';
 import 'package:short_time_app/screens/profile.dart'; // Asegúrate de que este archivo esté correctamente enlazado
+import 'package:short_time_app/screens/reservations_screen.dart';
 import 'package:short_time_app/widgets/service_search_delegate.dart';
 
 import 'components/Theme_button.dart';
@@ -30,8 +30,12 @@ class _HomeState extends State<Home> {
   int currentScreen = 0;
   List<dynamic> services = []; // Servicios cargados desde el JSON
 
-  // Corregido: Cambié ProfileScreen por ProfilePage
-  final List<Widget> screens = [const MainFeedScreen(), Reservas_Screen(), ProfilePage()];
+  // Lista de pantallas (Reservas utiliza un userId de prueba por ahora)
+  final List<Widget> screens = [
+    const MainFeedScreen(),
+    ReservationsScreen(userId: 3,), // Usando userId de prueba
+    ProfilePage(),
+  ];
 
   @override
   void initState() {
@@ -46,7 +50,7 @@ class _HomeState extends State<Home> {
       final decodedData = json.decode(response);
 
       setState(() {
-        services = decodedData['servicios']; // Guardar los servicios
+        services = decodedData['services'] ?? []; // Corregido para extraer servicios
       });
     } catch (e) {
       print('Error al cargar servicios: $e');

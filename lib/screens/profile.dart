@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:google_fonts/google_fonts.dart';  // Importa google_fonts
+import 'package:short_time_app/screens/add_service_screen.dart';
+
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -37,7 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Profile"),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.lightBlueAccent,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -120,13 +122,15 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             const Divider(),
             ListTile(
-              leading: const Icon(Icons.language),
+              leading: const Icon(Icons.add_business),
               title: Text(
-                "Language",
-                style: GoogleFonts.inter(), // Aplicar la fuente "Inter"
+                "Add Service",
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
               trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, '/add_service'); // Navega a la nueva pantalla
+              },
             ),
             const Divider(),
             ListTile(

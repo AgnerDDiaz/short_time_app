@@ -35,11 +35,7 @@ flutter:
 
   assets:
     - assets/test_data.json
-    - assets/food_pics/
-    - assets/magazine_pics/
     - assets/profile_pics/
-    - assets/sample_data/
-    - assets/grocery_pics/
     - assets/icon/
     - assets/short_time_assets/ImagenLocal.jpg
     - assets/profile_pics/person_cesare.jpeg
