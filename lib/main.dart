@@ -4,6 +4,7 @@ import 'package:short_time_app/api/auth_service.dart';
 import 'package:short_time_app/models/ProfileManager.dart';
 import 'package:short_time_app/models/auth_models.dart';
 import 'package:short_time_app/screens/profile_screen.dart';
+import 'package:short_time_app/screens/reservations_screen.dart';
 import 'package:short_time_app/short_time_themes.dart';
 import 'package:short_time_app/states/auth_state.dart';
 
@@ -83,7 +84,8 @@ class ShortTimeAppState extends State<ShortTimeApp> {
               AuthCheck(loggedInWidget: ChangePasswordScreen()), // Ruta añadida para la pantalla de cambio de contraseña
           // '/emptyPage': (context) => EmptyPage(), // Página vacía
           '/register': (context) =>
-              RegisterScreen(), // Ruta añadida para el registro
+              RegisterScreen(), // Ruta añadida para el registro // Ruta añadida para las reservas
+
           '/editProfile': (context) => AuthCheck(
               loggedInWidget:
                   EditProfileScreen()), // Ruta añadida para la edición de perfil

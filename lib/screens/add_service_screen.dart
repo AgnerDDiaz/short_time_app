@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:short_time_app/api/api_client.dart';
 import 'package:short_time_app/api/api_service.dart';
+import 'package:short_time_app/api/auth_service.dart';
+import 'package:short_time_app/api/service_service.dart';
+import 'package:short_time_app/models/service.dart';
 
 class AddServiceScreen extends StatefulWidget {
   const AddServiceScreen({Key? key}) : super(key: key);
@@ -11,6 +15,8 @@ class AddServiceScreen extends StatefulWidget {
 class _AddServiceScreenState extends State<AddServiceScreen> {
   final _serviceApi = ServiceApi();
   final _formKey = GlobalKey<FormState>();
+  final ServiceService serviceService = ServiceService(apiClient: ShortTimeApiClient());
+  final AuthService authService = AuthService(apiClient: ShortTimeApiClient());
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
@@ -39,15 +45,11 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
     setState(() => _isLoading = true);
 
     try {
-      final Map<String, dynamic> serviceData = {
-        'name': _nameController.text,
-        'description': _descriptionController.text,
-        'price': double.parse(_priceController.text),
-        'service_duration': int.parse(_durationController.text),
-        'category_id': 1 // Ajusta según tu lógica de categorías
-      };
+      final id = await authService.verifyToken().then((value) => value.sub);
 
-      await _serviceApi.createService(serviceData);
+      final serviceData = CreateServiceDto(clientId: id , name:  _nameController.text, price: _priceController.text, serviceDuration: int.parse( _durationController.text));
+
+      await serviceService.createService(serviceData);
       _clearFields();
 
       if(mounted) {

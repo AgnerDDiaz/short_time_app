@@ -13,6 +13,9 @@ import 'package:short_time_app/components/custom_dialog.dart';
 import 'package:short_time_app/models/tab_manager.dart';
 import 'package:short_time_app/models/user.dart'; // Importa google_fonts
 import 'package:provider/provider.dart';
+import 'package:short_time_app/screens/Reservas_screen.dart';
+import 'package:short_time_app/screens/add_service_screen.dart';
+import 'package:short_time_app/screens/reservations_screen.dart';
 import 'package:short_time_app/states/auth_state.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -163,22 +166,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         const SizedBox(height: 20),
                         // Opciones de perfil
                         const Divider(),
+                        if (user.role == 'client')
                         ListTile(
                           leading: Icon(Icons.list),
-                          title: Text('Reservaciones'),
+                          title: Text('Añadir serivico'),
                           trailing: const Icon(Icons.arrow_forward_ios),
                           onTap: () {
-                            Navigator.pushNamed(context, '/homebussines');
+                            int id = user.id;
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => AddServiceScreen()));
                           },
                         ),
-                        ListTile(
-                          leading: Icon(Icons.list),
-                          title: Text('bussines prueba'),
-                          trailing: const Icon(Icons.arrow_forward_ios),
-                          onTap: () {
-                            Navigator.pushNamed(context, '/homebussines');
-                          },
-                        ),
+                        // ListTile(
+                        //   leading: Icon(Icons.list),
+                        //   title: Text('bussines prueba'),
+                        //   trailing: const Icon(Icons.arrow_forward_ios),
+                        //   onTap: () {
+                        //     Navigator.pushNamed(context, '/homebussines');
+                        //   },
+                        // ),
                         const Divider(),
                         ListTile(
                           leading: const Icon(Icons.nature_people),
