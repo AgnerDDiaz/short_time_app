@@ -143,7 +143,7 @@ class _CustomerReservationsScreenState extends State<CustomerReservationsScreen>
         title: const Text("Mis Reservaciones"),
       ),
       body: isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator(color: Colors.blue))
           : errorMessage.isNotEmpty
           ? Center(
         child: Text(

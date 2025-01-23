@@ -130,7 +130,7 @@ class _ProviderReservationsScreenState extends State<ProviderReservationsScreen>
         title: const Text("Reservaciones"),
       ),
       body: isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator(color: Colors.blue))
           : errorMessage.isNotEmpty
           ? Center(
         child: Text(

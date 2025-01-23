@@ -17,7 +17,7 @@ class Reservas_Screen extends StatelessWidget {
     //     future: apiService.getRecipes(),
     //     builder: (context, snapshot) {
     //       if (snapshot.connectionState != ConnectionState.done) {
-    //         return Center(child: CircularProgressIndicator());
+    //         return Center(child: CircularProgressIndicator(color: Colors.blue));
     //       }
 
     //       return RecipesGrid(recipes: snapshot.data ?? []);

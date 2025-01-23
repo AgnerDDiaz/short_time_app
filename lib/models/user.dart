@@ -25,14 +25,16 @@ class GetUserByIdResponseDto {
   final String? businessName;
   final String? businessAddress;
   final String? phoneNumber;
+  final bool verified;
 
   GetUserByIdResponseDto({
     required this.id,
     required this.role,
     required this.name,
     required this.email,
-    this.profilePicture,
     required this.createdAt,
+    required this.verified,
+    this.profilePicture,
     this.businessName,
     this.businessAddress,
     this.phoneNumber,
@@ -52,37 +54,29 @@ class GetUserByIdResponseDto {
       businessName: json['business_name'] as String?,
       businessAddress: json['business_address'] as String?,
       phoneNumber: json['phone_number'] as String?,
+      verified: json['verified'] as bool,
     );
   }
 }
 
 class UpdateUserDto {
-  final String? role;
   final String? name;
   final String? email;
-  final String? passwordHash;
-  final String? profilePicture;
   final String? businessName;
   final String? businessAddress;
   final String? phoneNumber;
 
   UpdateUserDto({
-    this.role,
     this.name,
     this.email,
-    this.passwordHash,
-    this.profilePicture,
     this.businessName,
     this.businessAddress,
     this.phoneNumber,
   });
 
   Map<String, dynamic> toJson() => {
-        if (role != null) 'role': role,
         if (name != null) 'name': name,
         if (email != null) 'email': email,
-        if (passwordHash != null) 'password_hash': passwordHash,
-        if (profilePicture != null) 'profile_picture': profilePicture,
         if (businessName != null) 'business_name': businessName,
         if (businessAddress != null) 'business_address': businessAddress,
         if (phoneNumber != null) 'phone_number': phoneNumber,

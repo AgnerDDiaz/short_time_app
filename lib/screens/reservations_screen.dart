@@ -117,7 +117,7 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
         title: const Text("Mis Reservaciones"),
       ),
       body: isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator(color: Colors.blue))
           : Column(
         children: [
           // Calendario

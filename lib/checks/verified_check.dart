@@ -25,7 +25,7 @@ class AuthCheck extends StatelessWidget {
         if(!authState.isLoggedIn){
           return LoginScreen();
         }
-
+        print(authState.verifyTokenResponseDto);
         return FutureBuilder(
           future: userService.getUserById(authState.verifyTokenResponseDto!.sub),
           builder:(context, snapshot) {
@@ -33,9 +33,7 @@ class AuthCheck extends StatelessWidget {
               return const Center(child: CircularProgressIndicator(color: Colors.blue));
             }
             if(snapshot.hasError){
-              print('\n\n\n');
-              print(snapshot.error);
-              print('\n\n\n');
+              return const Center(child: Text("Error al cargar los datos del usuario"));
             }
             if(snapshot.data!.verified){
               return loggedInWidget;

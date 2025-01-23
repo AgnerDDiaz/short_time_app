@@ -104,7 +104,7 @@ class _ManageAvailabilityScreenState extends State<ManageAvailabilityScreen> {
         title: const Text('Gestionar Disponibilidad'),
       ),
       body: isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator(color: Colors.blue))
           : ListView.builder(
         itemCount: daysOfWeek.length,
         itemBuilder: (context, index) {

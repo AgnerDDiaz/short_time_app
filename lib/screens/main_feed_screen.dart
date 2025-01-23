@@ -97,7 +97,7 @@ class _MainFeedScreenState extends State<MainFeedScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator(color: Colors.blue))
           : errorMessage.isNotEmpty
           ? Center(
         child: Text(

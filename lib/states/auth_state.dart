@@ -4,10 +4,12 @@ import 'package:provider/provider.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:short_time_app/api/api_client.dart';
 import 'package:short_time_app/api/auth_service.dart';
+import 'package:short_time_app/models/auth_models.dart';
 // ... other imports
 
 class AuthState extends ChangeNotifier {
   final _storage = const FlutterSecureStorage();
+  VerifyTokenResponseDto? verifyTokenResponseDto;
   // final ShortTimeApiClient _apiClient; // Add API client
   final AuthService authService;
   Timer? _tokenCheckTimer; // Timer for token check
@@ -24,10 +26,12 @@ class AuthState extends ChangeNotifier {
     final result = await _storage.read(key: 'access_token');
     if (result != null && result.isNotEmpty) {
       isLoggedIn = true;
+      verifyTokenResponseDto = await authService.verifyToken();
     } else {
       isLoggedIn = false;
     }
-    // isLoading = true;
+    isLoading = false; // Set isLoading to false after loading the token
+    notifyListeners(); // Notify listeners to update the UI
     _startTokenCheckTimer();
   }
 
@@ -41,14 +45,12 @@ class AuthState extends ChangeNotifier {
   }
 
   Future<void> _checkTokenValidity() async {
-    isLoading = true;
     try {
-      await authService.verifyToken();
-      isLoggedIn = true;
-      isLoading = false;
-      notifyListeners();
+      final newVerifyTokenResponseDto = await authService.verifyToken();
+      verifyTokenResponseDto = newVerifyTokenResponseDto;
     } on ApiException catch (e) {
       await logout();
+
       if (e.statusCode == 401) {
         // Token is invalid (e.g., expired), log the user out
         print("token is invalid");
@@ -57,7 +59,19 @@ class AuthState extends ChangeNotifier {
         // Handle other API errors if needed
         print('Token check API Error: ${e.statusCode} - ${e.message}');
       }
-
+    }
+  }
+  Future<void> login() async {
+    try {
+      isLoading = true;
+      notifyListeners();
+      verifyTokenResponseDto = await authService.verifyToken();
+      isLoggedIn = true;
+      isLoading = false;
+      _startTokenCheckTimer();
+    } catch (e) {
+      isLoading = false;
+    } finally {
       notifyListeners();
     }
   }
@@ -65,6 +79,7 @@ class AuthState extends ChangeNotifier {
   Future<void> logout() async {
     isLoading = false;
     isLoggedIn = false;
+    verifyTokenResponseDto = null;
     await _storage.delete(key: 'access_token');
     _tokenCheckTimer?.cancel(); // Cancel the timer on logout
     notifyListeners();

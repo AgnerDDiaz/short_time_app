@@ -90,7 +90,7 @@ class _ManageServicesScreenState extends State<ManageServicesScreen> {
         title: const Text('Mis Servicios'),
       ),
       body: isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator(color: Colors.blue))
           : clientServices.isEmpty
           ? const Center(child: Text('No tienes servicios registrados.'))
           : ListView.builder(

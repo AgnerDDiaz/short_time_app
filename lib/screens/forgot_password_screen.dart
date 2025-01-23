@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:short_time_app/api/api_client.dart';
+import 'package:short_time_app/api/auth_service.dart';
+import 'package:short_time_app/components/custom_dialog.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   static const routeName = '/forgotPassword';
@@ -10,6 +13,7 @@ class ForgotPasswordScreen extends StatefulWidget {
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final TextEditingController emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final AuthService _authService = AuthService(apiClient: ShortTimeApiClient());
   bool _isLoading = false;
 
   void _sendPasswordResetEmail() async {
@@ -21,6 +25,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       await Future.delayed(Duration(seconds: 2)); // Simular un retraso para la carga
 
       String email = emailController.text;
+
+       await _authService.forgotPassword(email);
 
       // Simulación del envío del correo para restablecer la contraseña
       setState(() {
@@ -35,19 +41,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   void _showSuccessDialog() {
     showDialog(
       context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text('Password Reset'),
-        content: Text('A password reset link has been sent to your email address.'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              Navigator.of(ctx).pop();
-              Navigator.of(context).pop(); // Redirige de vuelta al login
-            },
-            child: Text('OK'),
-          ),
-        ],
-      ),
+      builder: (ctx) => AcceptDialog(
+        title: Text('Success'),
+        content: Text('A password reset link has been sent to your email.'),
+        onAccept: () {
+          Navigator.of(ctx).pop();
+        },
+      )
     );
   }
 
@@ -110,11 +110,26 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     ),
                   ),
                   SizedBox(height: 16.0),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/forgotPasswordVerification'); // Volver al Login
+                    },
+                    child: Text(
+                      "I already have a code",
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 16.0),
+
+
 
                   // Enlace para volver a la pantalla de login
                   InkWell(
                     onTap: () {
-                      Navigator.of(context).pop(); // Volver al Login
+                      Navigator.pushNamed(context, '/login'); // Volver al Login
                     },
                     child: Text(
                       "Back to Login",
