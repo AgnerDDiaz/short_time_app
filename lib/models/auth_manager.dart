@@ -4,12 +4,8 @@ import 'package:http/http.dart' as http;
 
 class AuthManager with ChangeNotifier {
   bool _isAuthenticated = false;
-  String? _userType;
-  String? _accessToken;
-  String? _refreshToken;
 
   bool get isAuthenticated => _isAuthenticated;
-  String? get userType => _userType;
 
   Future<bool> login(String email, String password) async {
     final url = Uri.parse("http://127.0.0.1:8000/api/login/");
@@ -23,9 +19,6 @@ class AuthManager with ChangeNotifier {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        _accessToken = data['access'];
-        _refreshToken = data['refresh'];
-        _userType = data['userType'];
         _isAuthenticated = true;
 
         notifyListeners(); // Notifica a la aplicación del cambio de estado
@@ -45,9 +38,6 @@ class AuthManager with ChangeNotifier {
 
   void logout() {
     _isAuthenticated = false;
-    _userType = null;
-    _accessToken = null;
-    _refreshToken = null;
     notifyListeners();
   }
 }

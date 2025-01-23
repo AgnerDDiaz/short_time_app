@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:short_time_app/api/api_client.dart';
+import 'package:short_time_app/api/auth_service.dart';
 import 'package:short_time_app/api/st_api_service.dart';
 import 'forgot_password_screen.dart'; // Importar la pantalla de recuperación de contraseña
 
@@ -12,6 +14,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final AuthService authService = AuthService(apiClient: ShortTimeApiClient());
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
   bool _isPasswordVisible = false;
@@ -23,29 +26,29 @@ class _LoginScreenState extends State<LoginScreen> {
       });
 
       try {
-        final loginResponse = await StApiService.loginUser(
-            emailController.text,
-            passwordController.text
-        );
+        final result = await authService.login(
+            emailController.text, passwordController.text);
 
-        if (!mounted)return;
+        if (!mounted) return;
 
-        if(loginResponse.success){
-          //Navigator.pushReplacement(context, '')
-        }
-        else  {
+        if (result.accessToken != null) {
+          // Store the accessToken
+          // Store the accessToken
+          await authService.storeAccessToken(result.accessToken);
+          Navigator.pushReplacementNamed(context, '/home');
+        } else {
           _showErrorDialog('Credenciales invalidas. ');
         }
-      }catch (e){
-        _showErrorDialog('Error de conexion de API');
-      }
-      finally {
+      } catch (e) {
+        print('\n\n\n');
+        print('Error en el login: $e');
+        _showErrorDialog('Credenciales invalidas. ');
+        print('\n\n\n');
+      } finally {
         setState(() {
           _isLoading = false;
         });
       }
-
-
     }
   }
 
@@ -86,13 +89,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     // Logo personalizable con margen superior
                     Container(
-                      margin: const EdgeInsets.only(bottom: 50.0), // Agregar margen superior
+                      margin: const EdgeInsets.only(
+                          bottom: 50.0), // Agregar margen superior
                       height: 300,
                       width: 300,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                          image: AssetImage('assets/icon/Short_Time Logo Claro.jpg'), // Ruta del logo
+                          image: AssetImage(
+                              'assets/icon/Short_Time Logo Claro.jpg'), // Ruta del logo
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -101,7 +106,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     // Título
                     Align(
-                      alignment: Alignment.centerLeft, // Alinea el texto hacia la izquierda
+                      alignment: Alignment
+                          .centerLeft, // Alinea el texto hacia la izquierda
                       child: Text(
                         "Welcome!",
                         style: TextStyle(
@@ -119,7 +125,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: InputDecoration(
                         labelText: "Email Address",
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20), // Esquinas redondeadas
+                          borderRadius:
+                              BorderRadius.circular(20), // Esquinas redondeadas
                         ),
                         prefixIcon: const Icon(Icons.email),
                       ),
@@ -142,7 +149,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: InputDecoration(
                         labelText: "Password",
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20), // Esquinas redondeadas
+                          borderRadius:
+                              BorderRadius.circular(20), // Esquinas redondeadas
                         ),
                         prefixIcon: const Icon(Icons.lock),
                         suffixIcon: IconButton(
@@ -190,26 +198,28 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 16.0),
 
                     // Añadir un SizedBox antes del botón para separarlo más
-                    const SizedBox(height: 30.0), // Ajusta la cantidad de espacio aquí
+                    const SizedBox(
+                        height: 30.0), // Ajusta la cantidad de espacio aquí
 
                     // Botón de inicio de sesión
                     _isLoading
                         ? const CircularProgressIndicator()
                         : ElevatedButton(
-                      onPressed: _login,
-                      child: const Text(
-                        "Login",
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        foregroundColor: Colors.white,
-                        minimumSize: const Size(double.infinity, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15), // Botón redondeado
-                        ),
-                      ),
-                    ),
+                            onPressed: _login,
+                            child: const Text(
+                              "Login",
+                              style: TextStyle(fontSize: 18),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue,
+                              foregroundColor: Colors.white,
+                              minimumSize: const Size(double.infinity, 50),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                    15), // Botón redondeado
+                              ),
+                            ),
+                          ),
                     const SizedBox(height: 16.0),
 
                     // Enlace "Register now"
@@ -234,24 +244,24 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 8.0),
 
                     // Enlace "Are you a Business?"
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text("Are you a Business? "),
-                        InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(context, '/emptyPage');
-                          },
-                          child: const Text(
-                            "Login here",
-                            style: TextStyle(
-                              color: Colors.blue,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: [
+                    //     const Text("Are you a Business? "),
+                    //     InkWell(
+                    //       onTap: () {
+                    //         Navigator.pushNamed(context, '/emptyPage');
+                    //       },
+                    //       child: const Text(
+                    //         "Login here",
+                    //         style: TextStyle(
+                    //           color: Colors.blue,
+                    //           fontWeight: FontWeight.bold,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
               ),

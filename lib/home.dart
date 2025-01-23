@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:provider/provider.dart';
+import 'package:short_time_app/api/api_client.dart';
+import 'package:short_time_app/api/auth_service.dart';
+import 'package:short_time_app/api/user_service.dart';
 import 'package:short_time_app/screens/customer_reservations_screen.dart';
 import 'package:short_time_app/screens/main_feed_screen.dart';
 import 'package:short_time_app/screens/profile.dart'; // Asegúrate de que este archivo esté correctamente enlazado
@@ -14,7 +17,7 @@ import 'models/tab_manager.dart';
 import 'screens/client_services_screen.dart';
 
 class Home extends StatefulWidget {
-  const Home({
+  Home({
     super.key,
     required this.appTitle,
     required this.ChangeThemeMode,
@@ -22,6 +25,7 @@ class Home extends StatefulWidget {
 
   final String appTitle;
   final Function ChangeThemeMode;
+  final ShortTimeApiClient apiClient = ShortTimeApiClient();
 
   @override
   State<Home> createState() => _HomeState();
@@ -35,24 +39,30 @@ class _HomeState extends State<Home> {
   final List<Widget> screens = [
     const MainFeedScreen(),
     CustomerReservationsScreen(userId: 3),
-    //ReservationsScreen(userId: 3,), // Usando userId de prueba
-    ProfilePage(),
+    ProfileScreen(
+      authService: AuthService(apiClient: ShortTimeApiClient()),
+      userService: UserService(apiClient: ShortTimeApiClient()),
+    ),
   ];
 
   @override
   void initState() {
     super.initState();
+    // Test if the token is stored
+
     loadServices(); // Cargar servicios al inicio
   }
 
   Future<void> loadServices() async {
     try {
       // Cargar el archivo JSON desde assets
-      final String response = await rootBundle.loadString('assets/test_data.json');
+      final String response =
+          await rootBundle.loadString('assets/test_data.json');
       final decodedData = json.decode(response);
 
       setState(() {
-        services = decodedData['services'] ?? []; // Corregido para extraer servicios
+        services =
+            decodedData['services'] ?? []; // Corregido para extraer servicios
       });
     } catch (e) {
       print('Error al cargar servicios: $e');
@@ -67,7 +77,8 @@ class _HomeState extends State<Home> {
     return Consumer<TabManager>(
       builder: (context, tabManager, child) => Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).appBarTheme.backgroundColor, // Color fijo
+          backgroundColor:
+              Theme.of(context).appBarTheme.backgroundColor, // Color fijo
           title: Row(
             children: [
               const SizedBox(width: 8),
@@ -107,7 +118,9 @@ class _HomeState extends State<Home> {
                   );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Cargando servicios, intenta nuevamente.')),
+                    const SnackBar(
+                        content:
+                            Text('Cargando servicios, intenta nuevamente.')),
                   );
                 }
               },

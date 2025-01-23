@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:short_time_app/api/api_client.dart';
+import 'package:short_time_app/api/auth_service.dart';
+import 'package:short_time_app/models/auth_models.dart';
 import '../api/st_api_service.dart';
-
 
 class RegisterScreen extends StatefulWidget {
   static const routeName = '/register';
@@ -12,53 +14,45 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final List<String> _roles = ['client', 'user']; //lista de roles
   String _selectedRole = 'client';
-
+  final AuthService _authService = AuthService(apiClient: ShortTimeApiClient());
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _isPasswordVisible = false; // Control de visibilidad de la contraseña
   bool _isTermsAccepted = false; // Estado de la casilla de verificación
   final TextEditingController _businessNameController = TextEditingController();
-  final TextEditingController _businessAddressController = TextEditingController();
+  final TextEditingController _businessAddressController =
+      TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   late final InputDecoration decoration;
 
   void _register() async {
     if (_formKey.currentState!.validate() && _isTermsAccepted) {
       try {
-        final Map<String, String>additionalFields ={};
-        if(_selectedRole =='client'){
+        final Map<String, String> additionalFields = {};
+        if (_selectedRole == 'client') {
           additionalFields['businessName'] = _businessNameController.text;
           additionalFields['businessAddress'] = _businessAddressController.text;
           additionalFields['phoneNumber'] = _phoneNumberController.text;
         }
-        final success = await StApiService.registerUser(
-            _selectedRole,
-            nameController.text,
-            emailController.text,
-            passwordController.text,
-            '',
-          additionalFields['businessName'] ?? "",
-          additionalFields['businessAddress'] ?? "",
-          additionalFields['phoneNumber'] ?? "",
+        final registerDto = RegisterDto(
+          role: roleFromString(_selectedRole),
+          name: nameController.text,
+          email: emailController.text,
+          passwordHash: passwordController.text,
+          businessName: additionalFields['businessName'] ?? "",
+          businessAddress: additionalFields['businessAddress'] ?? "",
+          phoneNumber: additionalFields['phoneNumber'] ?? "",
         );
-
-        if (mounted) {
-          if (success) { // Simplificamos la condición
-            await ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Registro Completado!")),
-            );
-            Navigator.pushReplacementNamed(
-                context, '/login'); // Usamos pushReplacement
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text(
-                  "Error en el registro. Por favor, intente nuevamente.")),
-            );
-          }
-        }
+        await _authService.register(registerDto);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Registro Completado!")),
+        );
+        Navigator.pushReplacementNamed(
+            context, '/login'); // Usamos pushReplacement
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -68,8 +62,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text(
-            "Por favor, complete todos los campos y acepte los términos")),
+        const SnackBar(
+            content: Text(
+                "Por favor, complete todos los campos y acepte los términos")),
       );
     }
   }
@@ -83,11 +78,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Form(
             key: _formKey,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               // Alinear a la izquierda
               children: [
                 // Espaciado adicional al inicio para bajar el contenido
                 SizedBox(height: 150),
+                Text(
+                  'Formulario de Registro',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 20),
 
                 // Campo "Name"
                 TextFormField(
@@ -95,8 +97,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   decoration: InputDecoration(
                     labelText: 'Name',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(
-                          20), // Borde redondeado
+                      borderRadius:
+                          BorderRadius.circular(20), // Borde redondeado
                     ),
                   ),
                   validator: (value) {
@@ -140,8 +142,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   decoration: InputDecoration(
                     labelText: 'Email Address',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(
-                          20), // Borde redondeado
+                      borderRadius:
+                          BorderRadius.circular(20), // Borde redondeado
                     ),
                   ),
                   keyboardType: TextInputType.emailAddress,
@@ -165,8 +167,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   decoration: InputDecoration(
                     labelText: 'Password',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(
-                          20), // Borde redondeado
+                      borderRadius:
+                          BorderRadius.circular(20), // Borde redondeado
                     ),
                     suffixIcon: IconButton(
                       icon: Icon(
@@ -201,8 +203,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   decoration: InputDecoration(
                     labelText: 'Confirm password',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(
-                          20), // Borde redondeado
+                      borderRadius:
+                          BorderRadius.circular(20), // Borde redondeado
                     ),
                     suffixIcon: IconButton(
                       icon: Icon(
@@ -229,57 +231,56 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 SizedBox(height: 20),
 
-                if (_selectedRole == 'client')
-                  ...[
-                    TextFormField(
-                      controller: _businessNameController,
-                      decoration: InputDecoration(
-                        labelText: 'Business Name',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
+                if (_selectedRole == 'client') ...[
+                  TextFormField(
+                    controller: _businessNameController,
+                    decoration: InputDecoration(
+                      labelText: 'Business Name',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Por favor, complete este campo.";
-                        }
-                        return null;
-                      },
                     ),
-                    SizedBox(height: 20),
-                    TextFormField(
-                      controller: _businessAddressController,
-                      decoration: InputDecoration(
-                        labelText: 'Business Address',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Por favor, complete este campo.";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    controller: _businessAddressController,
+                    decoration: InputDecoration(
+                      labelText: 'Business Address',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Por favor, complete este campo.";
-                        }
-                        return null;
-                      },
                     ),
-                    SizedBox(height: 20),
-                    TextFormField(
-                      controller: _phoneNumberController,
-                      decoration: InputDecoration(
-                        labelText: 'phone Number',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Por favor, complete este campo.";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    controller: _phoneNumberController,
+                    decoration: InputDecoration(
+                      labelText: 'phone Number',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Por favor, complete este campo.";
-                        }
-                        return null;
-                      },
                     ),
-                    SizedBox(height: 20),
-                  ],
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Por favor, complete este campo.";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
+                ],
                 // Checkbox de Términos y Condiciones
                 Row(
                   children: [

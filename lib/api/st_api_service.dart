@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:short_time_app/models/auth_models.dart';
 
 class LoginResponse {
   final bool success;
@@ -17,27 +18,11 @@ class LoginResponse {
 class StApiService {
   static const String baseUrl = 'http://producti-myserviceloadba-519714058.us-east-1.elb.amazonaws.com';
 
-  static Future<bool> registerUser(String role,
-      String name,
-      String email,
-      String password,
-      String profilePicture,
-      String businessName,
-      String businessAddress,
-      String phoneNumber,) async {
+  static Future<bool> registerUser(RegisterDto user) async {
     try {
       final String fullURL = '$baseUrl/auth/register';
 
-      final Map<String, dynamic> requestBody = {
-        'role': role.toLowerCase(),
-        'name': name,
-        'email': email,
-        'password_hash': password,
-        'profile_picture': profilePicture,
-        'business_name': businessName,
-        'business_address': businessAddress,
-        'phone_number': phoneNumber ?? '',
-      };
+      final Map<String, dynamic> requestBody = user.toJson();
 
       print('enviando datos: ${jsonEncode(requestBody)}');
 
@@ -89,8 +74,9 @@ class StApiService {
 
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
-        final accessToken = responseData['access_token'];
+        // Formated response data
 
+        final accessToken = responseData['access_token'];
         if (accessToken != null) {
           // Si tenemos un token válido, retornamos éxito
           return LoginResponse(

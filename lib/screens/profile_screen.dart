@@ -24,14 +24,12 @@ class ProfileScreen extends StatelessWidget {
 
           return Column(
             children: [
-
               Container(
                 padding: EdgeInsets.all(16),
                 child: Column(
                   children: [
                     Stack(
                       children: [
-
                         CircleAvatar(
                           radius: 50,
                           backgroundColor: Colors.grey.shade200,
@@ -42,7 +40,6 @@ class ProfileScreen extends StatelessWidget {
                               ? Icon(Icons.person, size: 50)
                               : null,
                         ),
-
                         Positioned(
                           bottom: 0,
                           right: 0,
@@ -56,7 +53,6 @@ class ProfileScreen extends StatelessWidget {
                                 color: Colors.white,
                               ),
                               onPressed: () {
-
                                 Navigator.pushNamed(context, '/edit_profile');
                               },
                             ),
@@ -83,42 +79,41 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
               Divider(height: 1),
-
               _buildMenuItem(
                 context,
                 'Servicios',
                 Icons.miscellaneous_services_outlined,
-                    () => Navigator.pushNamed(context, '/services'),
+                () => Navigator.pushNamed(context, '/services'),
               ),
               _buildMenuItem(
                 context,
                 'Notificaciones',
                 Icons.notifications_none,
-                    () => Navigator.pushNamed(context, '/notifications'),
+                () => Navigator.pushNamed(context, '/notifications'),
               ),
               _buildMenuItem(
                 context,
                 'Apariencia',
                 Icons.palette_outlined,
-                    () => Navigator.pushNamed(context, '/appearance'),
+                () => Navigator.pushNamed(context, '/appearance'),
               ),
               _buildMenuItem(
                 context,
                 'Idioma',
                 Icons.language,
-                    () => Navigator.pushNamed(context, '/language'),
+                () => Navigator.pushNamed(context, '/language'),
               ),
               _buildMenuItem(
                 context,
                 'Privacidad',
                 Icons.lock_outline,
-                    () => Navigator.pushNamed(context, '/privacy'),
+                () => Navigator.pushNamed(context, '/privacy'),
               ),
               _buildMenuItem(
                 context,
                 'Almacenamiento',
                 Icons.storage_outlined,
-                    () => Navigator.pushNamed(context, '/storage'),
+                () => Navigator.pushNamed(context, '/storage'),
               ),
             ],
           );
@@ -128,11 +123,11 @@ class ProfileScreen extends StatelessWidget {
   }
 
   Widget _buildMenuItem(
-      BuildContext context,
-      String title,
-      IconData icon,
-      VoidCallback onTap,
-      ) {
+    BuildContext context,
+    String title,
+    IconData icon,
+    VoidCallback onTap,
+  ) {
     return InkWell(
       onTap: onTap,
       child: Container(
