@@ -26,6 +26,7 @@ class GetUserByIdResponseDto {
   final String? businessAddress;
   final String? phoneNumber;
   final bool verified;
+  final int? category_id;
 
   GetUserByIdResponseDto({
     required this.id,
@@ -38,6 +39,7 @@ class GetUserByIdResponseDto {
     this.businessName,
     this.businessAddress,
     this.phoneNumber,
+    this.category_id,
   });
 
   factory GetUserByIdResponseDto.fromJson(dynamic json) {
@@ -54,6 +56,7 @@ class GetUserByIdResponseDto {
       businessName: json['business_name'] as String?,
       businessAddress: json['business_address'] as String?,
       phoneNumber: json['phone_number'] as String?,
+      category_id: json['category_id'] as int?,
       verified: json['verified'] as bool,
     );
   }
@@ -65,6 +68,7 @@ class UpdateUserDto {
   final String? businessName;
   final String? businessAddress;
   final String? phoneNumber;
+  final int? category_id;
 
   UpdateUserDto({
     this.name,
@@ -72,6 +76,7 @@ class UpdateUserDto {
     this.businessName,
     this.businessAddress,
     this.phoneNumber,
+    this.category_id
   });
 
   Map<String, dynamic> toJson() => {
@@ -80,5 +85,6 @@ class UpdateUserDto {
         if (businessName != null) 'business_name': businessName,
         if (businessAddress != null) 'business_address': businessAddress,
         if (phoneNumber != null) 'phone_number': phoneNumber,
+        if(this.category_id != null) 'category_id': category_id
       };
 }

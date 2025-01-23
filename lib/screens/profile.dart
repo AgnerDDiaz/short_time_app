@@ -106,6 +106,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: CircularProgressIndicator(color: Colors.blue));
                   }
                   final user = snapshot.data as GetUserByIdResponseDto;
+                  
                   return SingleChildScrollView(
                     child: Column(
                       children: [

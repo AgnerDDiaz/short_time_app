@@ -72,7 +72,7 @@ class _HomeState extends State<Home_bussines> {
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.explore),
-              label: "Home",
+              label: "Home B",
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.calendar_today),

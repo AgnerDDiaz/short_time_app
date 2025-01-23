@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:short_time_app/models/user.dart';
 
 import '../screens/client_services_screen.dart';
 
@@ -10,8 +11,9 @@ class ClientCard extends StatelessWidget {
   final String? openingTime; // Hora de apertura (opcional)
   final String? closingTime; // Hora de cierre (opcional)
   final VoidCallback onTap;
+  final GetUserByIdResponseDto client;
 
-  const ClientCard({
+  const ClientCard.ServiceCard({
     Key? key,
     required this.imageUrl,
     required this.businessName,
@@ -20,6 +22,7 @@ class ClientCard extends StatelessWidget {
     required this.openingTime,
     required this.closingTime,
     required this.onTap,
+    required this.client,
   }) : super(key: key);
 
   @override
@@ -29,7 +32,7 @@ class ClientCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ClientServicesScreen(clientId: clientId),
+            builder: (context) => ClientServicesScreen(client: client,),
           ),
         );
       },

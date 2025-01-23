@@ -106,13 +106,13 @@ class _HomeState extends State<Home> {
                       services: services,
                       onSelected: (clientId) {
                         // Navegar a los servicios del cliente seleccionado
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                ClientServicesScreen(clientId: clientId),
-                          ),
-                        );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) =>
+                        //         ClientServicesScreen(client: ,),
+                        //   ),
+                        // );
                       },
                     ),
                   );

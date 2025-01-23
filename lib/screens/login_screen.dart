@@ -5,6 +5,7 @@ import 'package:short_time_app/api/auth_service.dart';
 import 'package:short_time_app/api/st_api_service.dart';
 import 'package:short_time_app/components/custom_dialog.dart';
 import 'package:short_time_app/components/custom_text_form_field.dart';
+import 'package:short_time_app/models/auth_models.dart';
 import '../states/auth_state.dart';
 import 'forgot_password_screen.dart'; // Importar la pantalla de recuperación de contraseña
 
@@ -23,34 +24,39 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
   bool _isPasswordVisible = false;
 
-  Future<void> _login() async {
+  Future<bool> _login() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
       });
-
       try {
         final result = await authService.login(
             emailController.text, passwordController.text);
 
-        if (!mounted) return;
+        if (!mounted) return false;
 
         if (result.accessToken != null) {
-          // Store the accessToken
-          // Store the accessToken
           await authService.storeAccessToken(result.accessToken);
-          // Navigator.pushReplacementNamed(context, '/home');
+          setState(() {
+            _isLoading = false;
+          });
+          return true;
         } else {
           await _showErrorDialog('Credenciales inválidas. ');
+          setState(() {
+            _isLoading = false;
+          });
+          return false;
         }
       } catch (e) {
         await _showErrorDialog('Creedenciales inválidas. ');
-      } finally {
         setState(() {
           _isLoading = false;
         });
+        return false;
       }
     }
+    return false;
   }
 
   Future<void> _showErrorDialog(String message) {
@@ -133,19 +139,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     controller: passwordController,
                     labelText: 'Contraseña',
                     obscureText: !_isPasswordVisible,
-                      prefixIcon: const Icon(Icons.lock),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _isPasswordVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _isPasswordVisible = !_isPasswordVisible;
-                          });
-                        },
+                    prefixIcon: const Icon(Icons.lock),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                       ),
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Por favor ingrese su contraseña.";
@@ -187,9 +193,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       return ElevatedButton(
                         onPressed: () async {
                           try {
-                            await _login();
-                            await authState.login();
-                            Navigator.pushNamed(context, '/home');
+                            print(authState.verifyTokenResponseDto?.role);
+                            final success = await _login();
+                            if (success) {
+                              await authState.login();
+                            print(authState.verifyTokenResponseDto?.role);
+                              if (authState.verifyTokenResponseDto?.role ==
+                                  Role.user) {
+                                Navigator.pushNamed(context, '/home');
+                              } else {
+                                Navigator.pushNamed(context, '/home_bussines');
+                              }
+                            }
                           } catch (e) {
                           } finally {
                             setState(() {

@@ -26,7 +26,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         appBar: AppBar(
           title:
               Text('Cambiar Contraseña', style: TextStyle(color: Colors.white)),
-          backgroundColor: Colors.blue,
+                    foregroundColor: Colors.black,
           iconTheme: IconThemeData(color: Colors.white),
         ),
         body: FutureBuilder<String>(
