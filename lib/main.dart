@@ -12,6 +12,7 @@ import 'checks/auth_check.dart';
 import 'home.dart';
 import 'models/tab_manager.dart';
 import 'models/auth_manager.dart'; // Clase para manejar la autenticación
+import 'screens/change_password_screen.dart';
 import 'screens/edit_profile_screen.dart';
 import 'screens/forgot_password_verification_screen.dart';
 import 'screens/login_screen.dart'; // Pantalla de Login
@@ -82,6 +83,8 @@ class ShortTimeAppState extends State<ShortTimeApp> {
               ForgotPasswordScreen(), // Ruta añadida para la pantalla de recuperación
           '/forgotPasswordVerification': (context) =>
               ForgotPasswordVerificationScreen(), // Ruta añadida para la pantalla de verificación
+          '/changePassword': (context) =>
+              AuthCheck(loggedInWidget: ChangePasswordScreen()), // Ruta añadida para la pantalla de cambio de contraseña
           // '/emptyPage': (context) => EmptyPage(), // Página vacía
           '/register': (context) =>
               RegisterScreen(), // Ruta añadida para el registro
