@@ -61,6 +61,20 @@ class AuthState extends ChangeNotifier {
       }
     }
   }
+  Future<void> login() async {
+    try {
+      isLoading = true;
+      notifyListeners();
+      verifyTokenResponseDto = await authService.verifyToken();
+      isLoggedIn = true;
+      isLoading = false;
+      _startTokenCheckTimer();
+    } catch (e) {
+      isLoading = false;
+    } finally {
+      notifyListeners();
+    }
+  }
 
   Future<void> logout() async {
     isLoading = false;
