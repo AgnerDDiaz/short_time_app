@@ -6,7 +6,7 @@ class ServiceApi {
 
   final Dio _dio = Dio();
   final _storage = const FlutterSecureStorage();
-  final String baseUrl = 'http://prod2-myserviceloadbalan-71978353.us-east-1.elb.amazonaws.com/';
+  final String baseUrl = 'http://prod2-myserviceloadbalan-71978353.us-east-1.elb.amazonaws.com';
 
   // Singleton instance
   static final ServiceApi _instance = ServiceApi._internal();
