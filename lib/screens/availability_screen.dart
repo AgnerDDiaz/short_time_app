@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
-import 'dart:convert';
-import 'package:flutter/services.dart' show rootBundle;
+import '../api/api_availability.dart';
 
 class AvailabilityScreen extends StatefulWidget {
-  final int serviceId; // ID del servicio
-  final String serviceName; // Nombre del servicio
-  final int serviceDuration; // Duración del servicio en minutos
+  final int serviceId;
+  final String serviceName;
+  final int serviceDuration;
 
   const AvailabilityScreen({
     Key? key,
@@ -21,13 +20,12 @@ class AvailabilityScreen extends StatefulWidget {
 }
 
 class _AvailabilityScreenState extends State<AvailabilityScreen> {
-  DateTime selectedDate = DateTime.now(); // Día seleccionado
-  List<String> availableSlots = []; // Horarios disponibles
-  List<String> reservedSlots = []; // Horarios reservados
-  Map<String, bool> buttonStates = {}; // Estado individual de cada botón
-  String openingTime = "09:00"; // Hora de apertura (por defecto)
-  String closingTime = "17:00"; // Hora de cierre (por defecto)
-  bool isLoading = true; // Indicador de carga
+  final _availabilityApi = AvailabilityApi();
+  DateTime selectedDate = DateTime.now();
+  List<String> availableSlots = [];
+  List<String> reservedSlots = [];
+  Map<String, bool> buttonStates = {};
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -37,49 +35,31 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
 
   Future<void> loadServiceAvailability() async {
     try {
-      // Cargar el archivo JSON
-      final String response = await rootBundle.loadString('assets/test_data.json');
-      final Map<String, dynamic> data = json.decode(response);
+      setState(() => isLoading = true);
 
-      // Obtener disponibilidad del servicio
-      final availability = data['availability'] ?? [];
-      final serviceAvailability = availability
-          .where((slot) => slot['service_id'] == widget.serviceId)
-          .toList();
+      final data = await _availabilityApi.getServiceAvailability(
+          widget.serviceId,
+          DateFormat('yyyy-MM-dd').format(selectedDate)
+      );
 
-      if (serviceAvailability.isNotEmpty) {
-        final todayAvailability = serviceAvailability.firstWhere(
-              (slot) => slot['day'] == DateFormat('EEEE').format(selectedDate).toLowerCase(),
-          orElse: () => null,
-        );
+      final openingTime = data['opening_time'] ?? "09:00";
+      final closingTime = data['closing_time'] ?? "17:00";
 
-        if (todayAvailability != null) {
-          openingTime = todayAvailability['opening_time'];
-          closingTime = todayAvailability['closing_time'];
-        }
-      }
-
-      // Cargar horarios reservados
-      final reservations = data['reservations'] ?? [];
-      reservedSlots = reservations
-          .where((res) =>
-      res['service_id'] == widget.serviceId &&
-          res['date'] == DateFormat('yyyy-MM-dd').format(selectedDate))
-          .map<String>((res) {
-        return "${res['start_time']} - ${res['end_time']}";
-      }).toList();
-
-      // Generar horarios disponibles
-      generateTimeSlots();
-    } catch (e) {
-      print('Error al cargar datos: $e');
       setState(() {
+        reservedSlots = List<String>.from(data['reserved_slots'] ?? []);
+        generateTimeSlots(openingTime, closingTime);
         isLoading = false;
       });
+
+    } catch (e) {
+      setState(() => isLoading = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error al cargar disponibilidad'))
+      );
     }
   }
 
-  void generateTimeSlots() {
+  void generateTimeSlots(String openingTime, String closingTime) {
     final opening = DateFormat("HH:mm").parse(openingTime);
     final closing = DateFormat("HH:mm").parse(closingTime);
     final duration = widget.serviceDuration;
@@ -105,30 +85,46 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
       final nextSlot = current.add(Duration(minutes: duration));
       if (nextSlot.isAfter(endOfDay)) break;
 
-      final slotString =
-          "${DateFormat.jm().format(current)} - ${DateFormat.jm().format(nextSlot)}";
+      final slotString = "${DateFormat.jm().format(current)} - ${DateFormat.jm().format(nextSlot)}";
+
       if (!reservedSlots.contains(slotString)) {
         slots.add(slotString);
-        buttonStates[slotString] = false; // Inicializa como no reservado
+        buttonStates[slotString] = false;
       }
       current = nextSlot;
     }
 
     setState(() {
       availableSlots = slots;
-      isLoading = false;
     });
   }
 
-  void reserveSlot(String slot) {
-    setState(() {
-      reservedSlots.add(slot);
-      availableSlots.remove(slot);
-      buttonStates[slot] = true; // Actualiza el estado del botón a reservado
-    });
+  Future<void> reserveSlot(String slot) async {
+    try {
+      final [startTime, endTime] = slot.split(' - ');
 
-    // Simular el envío al backend
-    print('Reservación realizada para el horario: $slot');
+      await _availabilityApi.createReservation(
+          serviceId: widget.serviceId,
+          date: DateFormat('yyyy-MM-dd').format(selectedDate),
+          startTime: startTime,
+          endTime: endTime
+      );
+
+      setState(() {
+        reservedSlots.add(slot);
+        availableSlots.remove(slot);
+        buttonStates[slot] = true;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Reserva creada exitosamente'))
+      );
+
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error al crear la reserva'))
+      );
+    }
   }
 
   @override
@@ -141,7 +137,6 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
           ? const Center(child: CircularProgressIndicator())
           : Column(
         children: [
-          // Calendario
           TableCalendar(
             firstDay: DateTime.now(),
             lastDay: DateTime.now().add(const Duration(days: 30)),
@@ -150,11 +145,10 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
             onDaySelected: (selectedDay, focusedDay) {
               setState(() {
                 selectedDate = selectedDay;
-                isLoading = true;
               });
               loadServiceAvailability();
             },
-            calendarStyle: CalendarStyle(
+            calendarStyle: const CalendarStyle(
               selectedDecoration: BoxDecoration(
                 color: Colors.blue,
                 shape: BoxShape.circle,
@@ -166,7 +160,6 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
             ),
           ),
           const SizedBox(height: 16),
-          // Horarios disponibles
           Expanded(
             child: availableSlots.isEmpty && reservedSlots.isEmpty
                 ? const Center(child: Text('No hay horarios disponibles.'))
@@ -186,9 +179,7 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                   trailing: ElevatedButton(
                     onPressed: isReserved || buttonStates[slot] == true
                         ? null
-                        : () {
-                      reserveSlot(slot);
-                    },
+                        : () => reserveSlot(slot),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: isReserved || buttonStates[slot] == true
                           ? Colors.grey
