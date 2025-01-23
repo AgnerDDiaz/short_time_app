@@ -138,7 +138,7 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
         title: Text('Disponibilidad de ${widget.serviceName}'),
       ),
       body: isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator(color: Colors.blue))
           : Column(
         children: [
           // Calendario

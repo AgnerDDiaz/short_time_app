@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:short_time_app/api/api_client.dart';
 import 'package:short_time_app/api/auth_service.dart';
 import 'package:short_time_app/api/st_api_service.dart';
+import 'package:short_time_app/components/custom_dialog.dart';
 import 'forgot_password_screen.dart'; // Importar la pantalla de recuperación de contraseña
 
 class LoginScreen extends StatefulWidget {
@@ -37,12 +38,12 @@ class _LoginScreenState extends State<LoginScreen> {
           await authService.storeAccessToken(result.accessToken);
           Navigator.pushReplacementNamed(context, '/home');
         } else {
-          _showErrorDialog('Credenciales invalidas. ');
+          _showErrorDialog('Invalid credentials. ');
         }
       } catch (e) {
         print('\n\n\n');
         print('Error en el login: $e');
-        _showErrorDialog('Credenciales invalidas. ');
+        _showErrorDialog('Invalid credentials. ');
         print('\n\n\n');
       } finally {
         setState(() {
@@ -55,17 +56,12 @@ class _LoginScreenState extends State<LoginScreen> {
   void _showErrorDialog(String message) {
     showDialog(
       context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Login Failed'),
+      builder: (ctx) => AcceptDialog(
+        title: const Text('Error'),
         content: Text(message),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              Navigator.of(ctx).pop();
-            },
-            child: const Text('OK'),
-          ),
-        ],
+        onAccept: () {
+          Navigator.of(ctx).pop();
+        },
       ),
     );
   }

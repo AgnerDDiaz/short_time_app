@@ -1,9 +1,15 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mime/mime.dart';
+import 'package:short_time_app/api/api_client.dart';
 import 'package:short_time_app/api/auth_service.dart';
+import 'package:short_time_app/api/profile_service.dart';
 import 'package:short_time_app/api/user_service.dart';
+import 'package:short_time_app/components/custom_dialog.dart';
 import 'package:short_time_app/models/user.dart'; // Importa google_fonts
 
 class ProfileScreen extends StatefulWidget {
@@ -15,19 +21,24 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  final ProfileService _profileService =
+      ProfileService(apiClient: ShortTimeApiClient());
+  late Future<GetUserByIdResponseDto> _userProfile;
 
-  Future<GetUserByIdResponseDto> getProfileData () async {
-      final userId =  await widget.authService.verifyToken().then((value) => value.sub);
-      return await widget.userService.getUserById(userId);
+  Future<GetUserByIdResponseDto> getProfileData() async {
+    final userId =
+        await widget.authService.verifyToken().then((value) => value.sub);
+    return await widget.userService.getUserById(userId);
   }
+
 
   @override
   void initState() {
     super.initState();
+    _userProfile = getProfileData();
     // _userProfile = widget.userService.getUserById(widget.authService.verifyToken().then((value) => value.sub));
   }
 
-  File? _profileImage;
 
   // Datos ficticios del usuario (puedes reemplazarlos por datos reales o dinámicos)
   // final String userName = "Kelvin García";
@@ -39,9 +50,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
-      setState(() {
-        _profileImage = File(pickedFile.path);
-      });
+      try {
+        final mimeType = lookupMimeType(pickedFile.path)?.split('/');
+        await _profileService.uploadProfilePicture(await MultipartFile.fromPath(
+            'file', pickedFile.path,
+            filename: pickedFile.path.split('/').last,
+            contentType: MediaType(mimeType![0], mimeType[1])));
+        setState(() {
+          _userProfile = getProfileData();
+        });
+        showDialog(
+            context: context,
+            builder: (context) => AcceptDialog(
+                  title: const Text('Success'),
+                  content: const Text('Profile picture uploaded successfully'),
+                  onAccept: () {
+                    Navigator.of(context).pop();
+                  },
+                ));
+      } catch (e) {
+        print(e);
+        showDialog(
+            context: context,
+            builder: (context) => AcceptDialog(
+                  title: const Text('Error'),
+                  content: const Text('Failed to upload profile picture'),
+                  onAccept: () {
+                    Navigator.of(context).pop();
+                  },
+                ));
+      }
+      // setState(() {
+      //   _profileImage = File(pickedFile.path);
+      // });
     }
   }
 
@@ -58,10 +99,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         backgroundColor: Colors.lightBlueAccent,
       ),
       body: FutureBuilder(
-          future: getProfileData(),
+          future: _userProfile,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(
+                  child: CircularProgressIndicator(color: Colors.blue));
             }
             final user = snapshot.data as GetUserByIdResponseDto;
             return SingleChildScrollView(
@@ -74,10 +116,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       CircleAvatar(
                         radius: 60,
                         backgroundColor: Colors.grey.shade200,
-                        backgroundImage: _profileImage != null
-                            ? FileImage(_profileImage!)
+                        backgroundImage: user.profilePicture != null
+                            ? NetworkImage(user.profilePicture!)
                             : null,
-                        child: _profileImage == null
+                        child: user.profilePicture == null
                             ? const Icon(Icons.person,
                                 size: 60, color: Colors.grey)
                             : null,
@@ -135,7 +177,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     trailing: const Icon(Icons.arrow_forward_ios),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(context, '/editProfile');
+                    },
                   ),
                   const Divider(),
                   ListTile(

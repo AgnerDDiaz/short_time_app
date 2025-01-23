@@ -25,6 +25,7 @@ class AuthCheck extends StatelessWidget {
         if(!authState.isLoggedIn){
           return LoginScreen();
         }
+        print(authState.verifyTokenResponseDto);
         return FutureBuilder(
           future: userService.getUserById(authState.verifyTokenResponseDto!.sub),
           builder:(context, snapshot) {

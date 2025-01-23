@@ -79,14 +79,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
             key: _formKey,
             child: Column(
               // Alinear a la izquierda
-              children: [
+                children: [
                 // Espaciado adicional al inicio para bajar el contenido
                 SizedBox(height: 150),
                 Text(
                   'Formulario de Registro',
                   style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 10),
+
+                // Botón de regresar
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   ),
                 ),
                 SizedBox(height: 20),
@@ -95,17 +107,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 TextFormField(
                   controller: nameController,
                   decoration: InputDecoration(
-                    labelText: 'Name',
-                    border: OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(20), // Borde redondeado
-                    ),
+                  labelText: 'Name',
+                  border: OutlineInputBorder(
+                    borderRadius:
+                      BorderRadius.circular(20), // Borde redondeado
+                  ),
                   ),
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please enter your name.";
-                    }
-                    return null;
+                  if (value == null || value.isEmpty) {
+                    return "Please enter your name.";
+                  }
+                  return null;
                   },
                 ),
 
@@ -116,21 +128,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 DropdownButtonFormField<String>(
                   value: _selectedRole,
                   onChanged: (value) {
-                    setState(() {
-                      _selectedRole = value!;
-                    });
+                  setState(() {
+                    _selectedRole = value!;
+                  });
                   },
                   items: _roles.map((role) {
-                    return DropdownMenuItem<String>(
-                      value: role,
-                      child: Text(role),
-                    );
+                  return DropdownMenuItem<String>(
+                    value: role,
+                    child: Text(role),
+                  );
                   }).toList(),
                   decoration: InputDecoration(
-                    labelText: 'Tipo de Rol',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
+                  labelText: 'Tipo de Rol',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                   ),
                 ),
 
@@ -140,21 +152,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 TextFormField(
                   controller: emailController,
                   decoration: InputDecoration(
-                    labelText: 'Email Address',
-                    border: OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(20), // Borde redondeado
-                    ),
+                  labelText: 'Email Address',
+                  border: OutlineInputBorder(
+                    borderRadius:
+                      BorderRadius.circular(20), // Borde redondeado
+                  ),
                   ),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please enter your email.";
-                    }
-                    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+$').hasMatch(value)) {
-                      return "Please enter a valid email address.";
-                    }
-                    return null;
+                  if (value == null || value.isEmpty) {
+                    return "Please enter your email.";
+                  }
+                  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+$').hasMatch(value)) {
+                    return "Please enter a valid email address.";
+                  }
+                  return null;
                   },
                 ),
 
@@ -165,32 +177,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   controller: passwordController,
                   obscureText: !_isPasswordVisible,
                   decoration: InputDecoration(
-                    labelText: 'Password',
-                    border: OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(20), // Borde redondeado
+                  labelText: 'Password',
+                  border: OutlineInputBorder(
+                    borderRadius:
+                      BorderRadius.circular(20), // Borde redondeado
+                  ),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                    _isPasswordVisible
+                      ? Icons.visibility
+                      : Icons.visibility_off,
                     ),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _isPasswordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _isPasswordVisible = !_isPasswordVisible;
-                        });
-                      },
-                    ),
+                    onPressed: () {
+                    setState(() {
+                      _isPasswordVisible = !_isPasswordVisible;
+                    });
+                    },
+                  ),
                   ),
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please enter a password.";
-                    }
-                    if (value.length < 6) {
-                      return "Password must be at least 6 characters long.";
-                    }
-                    return null;
+                  if (value == null || value.isEmpty) {
+                    return "Please enter a password.";
+                  }
+                  if (value.length < 6) {
+                    return "Password must be at least 6 characters long.";
+                  }
+                  return null;
                   },
                 ),
 
@@ -201,103 +213,103 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   controller: confirmPasswordController,
                   obscureText: !_isPasswordVisible,
                   decoration: InputDecoration(
-                    labelText: 'Confirm password',
-                    border: OutlineInputBorder(
-                      borderRadius:
-                          BorderRadius.circular(20), // Borde redondeado
+                  labelText: 'Confirm password',
+                  border: OutlineInputBorder(
+                    borderRadius:
+                      BorderRadius.circular(20), // Borde redondeado
+                  ),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                    _isPasswordVisible
+                      ? Icons.visibility
+                      : Icons.visibility_off,
                     ),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _isPasswordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _isPasswordVisible = !_isPasswordVisible;
-                        });
-                      },
-                    ),
+                    onPressed: () {
+                    setState(() {
+                      _isPasswordVisible = !_isPasswordVisible;
+                    });
+                    },
+                  ),
                   ),
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Please confirm your password.";
-                    }
-                    if (value != passwordController.text) {
-                      return "Passwords do not match.";
-                    }
-                    return null;
+                  if (value == null || value.isEmpty) {
+                    return "Please confirm your password.";
+                  }
+                  if (value != passwordController.text) {
+                    return "Passwords do not match.";
+                  }
+                  return null;
                   },
                 ),
                 SizedBox(height: 20),
 
                 if (_selectedRole == 'client') ...[
                   TextFormField(
-                    controller: _businessNameController,
-                    decoration: InputDecoration(
-                      labelText: 'Business Name',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
+                  controller: _businessNameController,
+                  decoration: InputDecoration(
+                    labelText: 'Business Name',
+                    border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Por favor, complete este campo.";
-                      }
-                      return null;
-                    },
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                    return "Por favor, complete este campo.";
+                    }
+                    return null;
+                  },
                   ),
                   SizedBox(height: 20),
                   TextFormField(
-                    controller: _businessAddressController,
-                    decoration: InputDecoration(
-                      labelText: 'Business Address',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
+                  controller: _businessAddressController,
+                  decoration: InputDecoration(
+                    labelText: 'Business Address',
+                    border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Por favor, complete este campo.";
-                      }
-                      return null;
-                    },
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                    return "Por favor, complete este campo.";
+                    }
+                    return null;
+                  },
                   ),
                   SizedBox(height: 20),
                   TextFormField(
-                    controller: _phoneNumberController,
-                    decoration: InputDecoration(
-                      labelText: 'phone Number',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
+                  controller: _phoneNumberController,
+                  decoration: InputDecoration(
+                    labelText: 'phone Number',
+                    border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Por favor, complete este campo.";
-                      }
-                      return null;
-                    },
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                    return "Por favor, complete este campo.";
+                    }
+                    return null;
+                  },
                   ),
                   SizedBox(height: 20),
                 ],
                 // Checkbox de Términos y Condiciones
                 Row(
                   children: [
-                    Checkbox(
-                      value: _isTermsAccepted,
-                      onChanged: (value) {
-                        setState(() {
-                          _isTermsAccepted = value!;
-                        });
-                      },
+                  Checkbox(
+                    value: _isTermsAccepted,
+                    onChanged: (value) {
+                    setState(() {
+                      _isTermsAccepted = value!;
+                    });
+                    },
+                  ),
+                  Expanded(
+                    child: Text(
+                    'I have read and accept the Terms and Conditions and Privacy Policy.',
+                    style: TextStyle(fontSize: 14),
                     ),
-                    Expanded(
-                      child: Text(
-                        'I have read and accept the Terms and Conditions and Privacy Policy.',
-                        style: TextStyle(fontSize: 14),
-                      ),
-                    ),
+                  ),
                   ],
                 ),
 
@@ -307,12 +319,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ElevatedButton(
                   onPressed: _register,
                   child: Text(
-                    'Create',
-                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  'Create',
+                  style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue, // Color del botón
-                    minimumSize: Size(double.infinity, 50),
+                  backgroundColor: Colors.blue, // Color del botón
+                  minimumSize: Size(double.infinity, 50),
                   ),
                 ),
               ],

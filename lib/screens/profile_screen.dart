@@ -19,7 +19,7 @@ class ProfileScreen extends StatelessWidget {
         builder: (context, profileManager, child) {
           final user = profileManager.userprofile;
           if (user == null) {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator(color: Colors.blue));
           }
 
           return Column(
