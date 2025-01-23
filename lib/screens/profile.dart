@@ -165,6 +165,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         const Divider(),
                         ListTile(
                           leading: Icon(Icons.list),
+                          title: Text('Reservaciones'),
+                          trailing: const Icon(Icons.arrow_forward_ios),
+                          onTap: () {
+                            Navigator.pushNamed(context, '/homebussines');
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.list),
                           title: Text('bussines prueba'),
                           trailing: const Icon(Icons.arrow_forward_ios),
                           onTap: () {

@@ -24,7 +24,7 @@
     factory ShortTimeApiClient() {
       return _singleton;
     }
-    ShortTimeApiClient._internal() : baseUrl = 'http://producti-myserviceloadba-519714058.us-east-1.elb.amazonaws.com';
+    ShortTimeApiClient._internal() : baseUrl = 'http://192.168.0.199:3000';
 
     Future<Map<String, String>> getHeaders() async {
       final headers = <String, String>{
@@ -59,6 +59,7 @@
           response = await http.Response.fromStream(await request.send());
 
         } else {
+          print(finalUri);
           switch (method) {
             case 'GET':
               response = await http.get(finalUri, headers: await getHeaders());

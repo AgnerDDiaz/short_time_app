@@ -1,70 +1,76 @@
-import 'package:dio/dio.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'dart:async';
+import 'package:short_time_app/api/api_client.dart';
+import 'package:short_time_app/models/api.dart';
+import 'package:short_time_app/models/availability.dart';
 
-class AvailabilityApi {
-  final Dio dio = Dio();
-  final storage = const FlutterSecureStorage();
-  final String baseUrl = 'http://producti-myserviceloadba-519714058.us-east-1.elb.amazonaws.com';
 
-  Future<Map<String, String>> getHeaders() async {
-    final token = await storage.read(key: 'access_token');
-    return {
-      'Authorization': 'Bearer $token',
-      'Content-Type': 'application/json'
-    };
-  }
+class AvailabilityService {
+  final ShortTimeApiClient _apiClient;
 
-  Future<Map<String, dynamic>> getServiceAvailability(int serviceId, String date) async {
+  AvailabilityService({required ShortTimeApiClient apiClient}) : _apiClient = apiClient;
+
+  Future<CreateAvailabilityResponseDto> createAvailability(CreateAvailabilityDto createAvailabilityDto) async {
     try {
-      final response = await dio.get(
-          '$baseUrl/services/$serviceId/availability',
-          queryParameters: {'date': date},
-          options: Options(headers: await getHeaders())
+      return await _apiClient.makeRequest<CreateAvailabilityResponseDto>(
+        'POST',
+        '/avalability',
+        body: createAvailabilityDto.toJson(),
+        fromJson: CreateAvailabilityResponseDto.fromJson,
       );
-
-      if(response.statusCode != 200) {
-        throw DioException(
-            requestOptions: response.requestOptions,
-            response: response,
-            message: 'Error fetching availability'
-        );
-      }
-
-      return response.data;
-
-    } catch (e) {
-      throw Exception('Network error: $e');
+    } on ApiException catch (e) {
+      rethrow;
     }
   }
 
-  Future<void> createReservation({
-    required int serviceId,
-    required String date,
-    required String startTime,
-    required String endTime,
-  }) async {
+
+
+  Future<GetAvailabilityByIdResponseDto> getAvailabilityById(num id) async {
     try {
-      final response = await dio.post(
-          '$baseUrl/reservations',
-          data: {
-            'service_id': serviceId,
-            'date': date,
-            'start_time': startTime,
-            'end_time': endTime
-          },
-          options: Options(headers: await getHeaders())
+      return await _apiClient.makeRequest<GetAvailabilityByIdResponseDto>(
+        'GET',
+        '/avalability/$id',
+        fromJson: GetAvailabilityByIdResponseDto.fromJson,
       );
+    } on ApiException catch (e) {
+      rethrow;
+    }
+  }
 
-      if(response.statusCode != 201) {
-        throw DioException(
-            requestOptions: response.requestOptions,
-            response: response,
-            message: 'Error creating reservation'
-        );
-      }
+  Future<GetAvailabilityOfDateResponseDto> getAvailabilityOfDate(GetAvailabilityOfDateDto getAvailabilityOfDateDto) async {
+    try {
+      return await _apiClient.makeRequest<GetAvailabilityOfDateResponseDto>(
+        'POST',
+        '/avalability/availability-of-date',
+        body: getAvailabilityOfDateDto.toJson(),
+        fromJson: GetAvailabilityOfDateResponseDto.fromJson,
+      );
+    } on ApiException catch (e) {
+      rethrow;
+    }
+  }
 
-    } catch (e) {
-      throw Exception('Error: $e');
+  Future<MessageResponseDto> updateAvailabilityById(num id, UpdateAvailabilityDto updateAvailabilityDto) async {
+    try {
+      return await _apiClient.makeRequest<MessageResponseDto>(
+        'PUT',
+        '/avalability/$id',
+        body: updateAvailabilityDto.toJson(),
+        fromJson: MessageResponseDto.fromJson,
+      );
+    } on ApiException catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<MessageResponseDto> deleteAvailability(num id) async {
+    try {
+      return await _apiClient.makeRequest<MessageResponseDto>(
+        'DELETE',
+        '/avalability/$id',
+        fromJson: MessageResponseDto.fromJson,
+      );
+    } on ApiException catch (e) {
+      rethrow;
     }
   }
 }

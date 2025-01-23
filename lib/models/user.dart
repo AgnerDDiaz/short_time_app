@@ -25,6 +25,7 @@ class GetUserByIdResponseDto {
   final String? businessName;
   final String? businessAddress;
   final String? phoneNumber;
+  final String? rating;
   final bool verified;
   final int? category_id;
 
@@ -40,6 +41,7 @@ class GetUserByIdResponseDto {
     this.businessAddress,
     this.phoneNumber,
     this.category_id,
+    this.rating
   });
 
   factory GetUserByIdResponseDto.fromJson(dynamic json) {
@@ -58,6 +60,7 @@ class GetUserByIdResponseDto {
       phoneNumber: json['phone_number'] as String?,
       category_id: json['category_id'] as int?,
       verified: json['verified'] as bool,
+      rating:  json['rating'] as String?
     );
   }
 }

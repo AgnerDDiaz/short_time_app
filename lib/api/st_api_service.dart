@@ -16,7 +16,7 @@ class LoginResponse {
   });
 }
 class StApiService {
-  static const String baseUrl = 'http://producti-myserviceloadba-519714058.us-east-1.elb.amazonaws.com';
+  static const String baseUrl = 'http://192.168.0.199:3000';
 
   static Future<bool> registerUser(RegisterDto user) async {
     try {

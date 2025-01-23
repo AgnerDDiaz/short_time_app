@@ -11,7 +11,6 @@ import 'api/api_client.dart';
 import 'checks/auth_check.dart';
 import 'home.dart';
 import 'models/tab_manager.dart';
-import 'models/auth_manager.dart'; // Clase para manejar la autenticación
 import 'screens/change_password_screen.dart';
 import 'screens/edit_profile_screen.dart';
 import 'screens/forgot_password_verification_screen.dart';
@@ -55,9 +54,6 @@ class ShortTimeAppState extends State<ShortTimeApp> {
       providers: [
         ChangeNotifierProvider(
           create: (context) => TabManager(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => AuthManager(), // Importación sin conflicto
         ),
         ChangeNotifierProvider(
           create: (context) => ProfileManager(),

@@ -35,6 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
         if (!mounted) return false;
 
+        print(result.accessToken);
         if (result.accessToken != null) {
           await authService.storeAccessToken(result.accessToken);
           setState(() {
@@ -49,6 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
           return false;
         }
       } catch (e) {
+        print(e);
         await _showErrorDialog('Creedenciales inválidas. ');
         setState(() {
           _isLoading = false;

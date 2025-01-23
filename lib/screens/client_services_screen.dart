@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:short_time_app/api/api_client.dart';
+import 'package:short_time_app/api/rating_service.dart';
 import 'package:short_time_app/api/service_service.dart';
 import 'package:short_time_app/api/user_service.dart';
 import 'package:short_time_app/models/service.dart';
@@ -19,12 +20,13 @@ class ClientServicesScreen extends StatefulWidget {
 class _ClientServicesScreenState extends State<ClientServicesScreen> {
   List<dynamic> clients = [];  // Agregar esta lista
   List<GetServiceByIdResponseDto> clientServices = [];
-  List<Rating> ratings = [];
+  List<RatingDto> ratings = [];
   bool isLoading = true;
   String errorMessage = "";
 
   final ServiceService serviceService = ServiceService(apiClient: ShortTimeApiClient());
   final UserService userService = UserService(apiClient: ShortTimeApiClient());
+  final RatingService ratingService = RatingService(apiClient: ShortTimeApiClient());
 
   @override
   void initState() {
@@ -40,13 +42,14 @@ class _ClientServicesScreenState extends State<ClientServicesScreen> {
       });
 
       final services = await serviceService.getAllServices(widget.client.id);
+      final clientRatings = await ratingService.getClientRatings(widget.client.id);
       
 
       setState(() {
         clientServices = services.results;
       });
 
-      ratings = [];
+      ratings = clientRatings.results;
 
       setState(() {
         isLoading = false;
@@ -185,7 +188,8 @@ class _ClientServicesScreenState extends State<ClientServicesScreen> {
                                     builder: (context) => AvailabilityScreen(
                                       serviceId: service.id,
                                       serviceName: service.name,
-                                      serviceDuration: service.serviceDuration,
+                                      serviceDuration: service.serviceDuration, 
+                                      clientId: service.clientId,
                                     ),
                                   ),
                                 );

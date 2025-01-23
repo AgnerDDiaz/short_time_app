@@ -8,10 +8,11 @@ class ClientCard extends StatelessWidget {
   final String? businessName; // Nombre de la empresa (opcional)
   final String? location; // Dirección del cliente (opcional)
   final int clientId; // ID del cliente
-  final String? openingTime; // Hora de apertura (opcional)
-  final String? closingTime; // Hora de cierre (opcional)
+  // final String? openingTime; // Hora de apertura (opcional)
+  // final String? closingTime; // Hora de cierre (opcional)
   final VoidCallback onTap;
   final GetUserByIdResponseDto client;
+  final String? rating;
 
   const ClientCard.ServiceCard({
     Key? key,
@@ -19,10 +20,11 @@ class ClientCard extends StatelessWidget {
     required this.businessName,
     required this.location,
     required this.clientId,
-    required this.openingTime,
-    required this.closingTime,
+    // required this.openingTime,
+    // required this.closingTime,
     required this.onTap,
     required this.client,
+    required this.rating,
   }) : super(key: key);
 
   @override
@@ -96,9 +98,13 @@ class ClientCard extends StatelessWidget {
                     const SizedBox(height: 4),
                     // Horario del cliente
                     Text(
-                      "Horario: ${openingTime ?? "No disponible"} - ${closingTime ?? "No disponible"}",
+                      "Rating: ${rating ?? "No disponible"}",
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
+                    // Text(
+                    //   "Horario: ${openingTime ?? "No disponible"} - ${closingTime ?? "No disponible"}",
+                    //   style: Theme.of(context).textTheme.bodySmall,
+                    // ),
                   ],
                 ),
               ),

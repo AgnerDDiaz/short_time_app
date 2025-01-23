@@ -117,8 +117,7 @@ class _MainFeedScreenState extends State<MainFeedScreen> {
                                           businessName: client.name,
                                           location: client.businessAddress,
                                           clientId: client.id,
-                                          openingTime: '',
-                                          closingTime: '',
+                                          rating: client.rating,
                                           onTap: () {
                                             Navigator.push(
                                               context,
